@@ -19,12 +19,12 @@ local p=3 --p gain for flare pitch
 local d=0 --d gain for flare pitch
 local stall = param:get("AIRSPEED_MIN")
 local state=0
-local og_ang=param:get("Q_TILT_MAX")
+
 -- 0 decent
 -- 1 flare
 -- 2 handback
 -- 3 reject
-
+local og_ang=param:get("Q_TILT_MAX")
 
 local triggered =false
 local min_trigger_distance=300 --()
@@ -44,7 +44,7 @@ function update()
     local endpos
     local dist_m=vehicle:get_wp_distance_m()
     local index= mission:get_current_nav_index()
-    local type
+    local type=-1
     if index then
         local item=mission:get_item(index)
         if item then 
@@ -59,8 +59,8 @@ function update()
         if dist_m>=min_trigger_distance-trigger_threshold and dist_m<=min_trigger_distance+trigger_threshold and not triggered and type==85 then
             gcs:send_text(5,"trigger controller")
             startpos=ahrs:get_position()
-            endpos=ahrs:get_home()
-            if startpos and endpos then
+            endpos=ahrs:get_home()--change
+            if startpos and endpos then--saturate link
                 triggered=true
             end
         end
@@ -100,16 +100,11 @@ function update()
                 now=millis()
                 if now-last_time>10 then
                     pr_cmd=p1*(pitch_d-pitch)+d1*(-pr)
+
                 end
             end
 
-            if vehicle:get_mode() == 10 then
-                if vehicle:nav_scripting_enable(1) then
-                     vehicle:set_target_throttle_rpy(50, 0, pr_cmd, 0)
-                end
-    
-            end
-            --vehicle:set_target_airspeed(stall+aspeed_offset)
+            vehicle:set_target_airspeed(stall+aspeed_offset)
             --param:set("AIRSPEED_CRUISE",stall+aspeed_offset)
             if mode then
                 local vel_vec=Vector3f()
@@ -145,12 +140,12 @@ function update()
         if state==2 then
             vehicle:set_mode(23)
             gcs:send_text(0,"Script Excurted Succesfully")
-            os.exit()
+            return
         end
         if state==3 then
             vehicle:set_mode(23)
             gcs:send_text(0,"Landing Rejected. Returned to Hover")
-            os.exit()
+            return
         end
 
         -------------------------------------
