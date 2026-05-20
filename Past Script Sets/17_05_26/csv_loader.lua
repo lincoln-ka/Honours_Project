@@ -1,11 +1,10 @@
 -- csv_loader.lua
--- Watches start_transition (set by vtol_transition_trigger.lua).
--- When the flag fires, loads each configured CSV file into a named global
--- 2-D array readable by any other loaded Lua script.
+-- Loads each configured CSV file into a named global 2-D array at startup,
+-- readable by any other loaded Lua script.
 --
 -- Place all CSV files in the scripts/ folder alongside this script.
 -- In SITL the working directory is the SITL root, so paths begin with "scripts/".
--- On real hardware they live on the SD card under APM/scripts/.
+-- On real hardware they live on the SD card under APM/scripts/..
 
 -- ── Configuration ────────────────────────────────────────────────────────────
 -- Each entry: { file = "filename_without_extension", global = "GlobalArrayName" }
@@ -14,15 +13,10 @@
 local CSV_DIR = "scripts/"
 
 local FILES = {
-    { file = "K_test", global = "K" },
+    { file = "K", global = "K" },
     { file = "U", global = "U_d" },
     { file = "Y", global = "Y_d" },
 }
-
--- ── Module state ──────────────────────────────────────────────────────────────
-
-local UPDATE_RATE_MS = 200
-local _loaded = false
 
 -- Pre-declare all globals as nil so other scripts see them immediately.
 for _, entry in ipairs(FILES) do
@@ -58,38 +52,22 @@ local function parse_csv(filepath)
     return data
 end
 
--- ── Main update loop ──────────────────────────────────────────────────────────
+-- ── Startup load ──────────────────────────────────────────────────────────────
 
-local function update()
+gcs:send_text(1, "csv_loader: loading CSV files...")
 
-    if not start_transition then
-        return update, UPDATE_RATE_MS
+for _, entry in ipairs(FILES) do
+    local path   = CSV_DIR .. entry.file .. ".csv"
+    local result = parse_csv(path)
+    if result then
+        _ENV[entry.global] = result
+        gcs:send_text(6, string.format(
+            "csv_loader: %s -> %s (%d rows x %d cols)",
+            entry.file, entry.global, #result, #result[1]
+        ))
+    else
+        gcs:send_text(3, "csv_loader: " .. entry.file .. " failed to load")
     end
-
-    if _loaded then
-        return update, UPDATE_RATE_MS
-    end
-
-    gcs:send_text(6, "csv_loader: start_transition detected, loading CSV files...")
-
-    for _, entry in ipairs(FILES) do
-        local path   = CSV_DIR .. entry.file .. ".csv"
-        local result = parse_csv(path)
-        if result then
-            _ENV[entry.global] = result
-            gcs:send_text(6, string.format(
-                "csv_loader: %s -> %s (%d rows x %d cols)",
-                entry.file, entry.global, #result, #result[1]
-            ))
-        else
-            gcs:send_text(3, "csv_loader: " .. entry.file .. " failed to load")
-        end
-    end
-
-    _loaded = true
-    gcs:send_text(6, "csv_loader: all files processed")
-    return update, UPDATE_RATE_MS
 end
 
-gcs:send_text(6, "csv_loader: script loaded")
-return update()
+gcs:send_text(6, "csv_loader: all files processed")
