@@ -61,6 +61,7 @@ local update_rate=10
 
 
 
+
 ------------------------------------------------------------------
 ---                      Setup                                 ---
 ------------------------------------------------------------------
@@ -90,6 +91,7 @@ local AUTO_MODE         = 10    -- ArduPlane / QuadPlane AUTO mode
 start_transition = false        -- global flag, readable by other scripts
 local _triggered     = false
 local _last_debug_ms = 0        -- rate-limit GCS debug spam
+local dist_m=1000
 
 --- State observer
 local FN_MOTOR1    = 33   -- SRV_Channel::k_motor1
@@ -128,7 +130,10 @@ end
 --           m1, m2, m3, m4, tilt_rad, elev_rad }
 -- u_now: { dm1_dt, dm2_dt, dm3_dt, dm4_dt, dtilt_dt, delev_dt }
 local function get_current_state()
-    local now_ms = millis()
+    local now_ms = tonumber(tostring(millis()))
+    --gcs:send_text(1, string.format("now_ms = %f", now_ms))
+    --gcs:send_text(1, string.format("last_ms = %f", _obs_last_ms))
+
     local dt = math.max((now_ms - _obs_last_ms) / 1000, 1e-6)
     _obs_last_ms = now_ms
 
@@ -189,12 +194,15 @@ local function get_current_state()
     local elev_rad = pwm_to_rad(SRV_Channels:get_output_pwm(FN_ELEVATOR), MAX_ELEV_RAD)
 
     -- Rates of change
-    local dm1_dt   = (m1       - _obs_prev_m1)   / dt
-    local dm2_dt   = (m2       - _obs_prev_m2)   / dt
-    local dm3_dt   = (m3       - _obs_prev_m3)   / dt
-    local dm4_dt   = (m4       - _obs_prev_m4)   / dt
-    local dtilt_dt = (tilt_rad - _obs_prev_tilt) / dt
-    local delev_dt = (elev_rad - _obs_prev_elev) / dt
+    local dm1_dt, dm2_dt, dm3_dt, dm4_dt, dtilt_dt, delev_dt = 0, 0, 0, 0, 0, 0
+    if dt >= 0.005 then
+        dm1_dt   = (m1       - _obs_prev_m1)   / dt
+        dm2_dt   = (m2       - _obs_prev_m2)   / dt
+        dm3_dt   = (m3       - _obs_prev_m3)   / dt
+        dm4_dt   = (m4       - _obs_prev_m4)   / dt
+        dtilt_dt = (tilt_rad - _obs_prev_tilt) / dt
+        delev_dt = (elev_rad - _obs_prev_elev) / dt
+    end
 
     _obs_prev_m1, _obs_prev_m2, _obs_prev_m3, _obs_prev_m4 = m1, m2, m3, m4
     _obs_prev_tilt, _obs_prev_elev = tilt_rad, elev_rad
@@ -328,7 +336,7 @@ local function controller_trigger()
     vtol_loc:lng(nav_item:y())   -- int32, degrees * 1e7
 
     -- 2-D distance in metres.
-    local dist_m = current_loc:get_distance(vtol_loc)
+    dist_m = current_loc:get_distance(vtol_loc)
 
     -- Rate-limited debug: print at most once per second.
     local now_ms = millis()
@@ -358,31 +366,91 @@ local function controller_init ()
     tr0=true
 end
 
--- matrix subtraction: C = A - B  (must be same dimensions)
+-- matrix/vector subtraction: C = A - B  (must be same dimensions)
 local function mat_sub(A, B)
+    if #A ~= #B then
+        gcs:send_text(3, string.format("mat_sub mismatch: #A=%d x %d #B=%d x %d", #A,#A, #B,#B))
+        return nil
+    end
     local C = {}
     for i = 1, #A do
-        C[i] = {}
-        for j = 1, #A[i] do
-            C[i][j] = A[i][j] - B[i][j]
+        if type(A[i]) == "table" then
+            C[i] = {}
+            for j = 1, #A[i] do
+                C[i][j] = A[i][j] - B[i][j]
+            end
+        else
+            C[i] = A[i] - B[i]
         end
     end
     return C
 end
 
--- matrix multiplication: C = A * B  (A is m×k, B is k×n)
-local function mat_mul(A, B)
-    local m, k, n = #A, #B, #B[1]
+
+-- matrix addition: C = A + B  (must be same dimensions)
+local function mat_add(A, B)
     local C = {}
-    for i = 1, m do
+    for i = 1, #A do
         C[i] = {}
+        for j = 1, #A[i] do
+            C[i][j] = A[i][j] + B[i][j]
+        end
+    end
+    return C
+end
+
+-- matrix/vector multiplication, handles all combinations of 1D vectors and 2D matrices
+local function mat_mul(A, B)
+    local a2d = type(A[1]) == "table"
+    local b2d = type(B[1]) == "table"
+
+    if a2d and b2d then
+        -- (m×k) * (k×n) = (m×n)
+        local m, k, n = #A, #B, #B[1]
+        local C = {}
+        for i = 1, m do
+            C[i] = {}
+            for j = 1, n do
+                local s = 0
+                for p = 1, k do s = s + A[i][p] * B[p][j] end
+                C[i][j] = s
+            end
+        end
+        return C
+    elseif a2d and not b2d then
+        -- (m×k) * (k) = (m)
+        local m, k = #A, #B
+        local C = {}
+        for i = 1, m do
+            local s = 0
+            for p = 1, k do s = s + A[i][p] * B[p] end
+            C[i] = s
+        end
+        return C
+    elseif not a2d and b2d then
+        -- (k) * (k×n) = (n)
+        local k, n = #A, #B[1]
+        local C = {}
         for j = 1, n do
             local s = 0
-            for p = 1, k do
-                s = s + A[i][p] * B[p][j]
-            end
-            C[i][j] = s
+            for p = 1, k do s = s + A[p] * B[p][j] end
+            C[j] = s
         end
+        return C
+    else
+        -- (k) · (k) = scalar dot product
+        local s = 0
+        for p = 1, #A do s = s + A[p] * B[p] end
+        return s
+    end
+end
+
+-- matrix element wise multiplication C=A.*B
+local function element_mul(A,B)
+    local l=#B
+    C={}
+    for i =1 ,l do 
+        C[i]=A*B[i]
     end
     return C
 end
@@ -390,6 +458,7 @@ end
 -- interpolates matlab arrays to current time
 local function interpolate(func, now_p, dataset)
     local x1, x3
+    
     if dataset == "gain" then
         x1 = math.floor(now_p / gain_td)
         x3 = now_p / gain_td
@@ -403,15 +472,45 @@ local function interpolate(func, now_p, dataset)
         gcs:send_text(3, "interpolate: unknown dataset '" .. tostring(dataset) .. "'")
         return nil
     end
-
-    x1 = math.max(1, x1)                    -- clamp low: Lua arrays are 1-indexed
+    x1 = math.max(1, math.min(x1, #func))   -- clamp to valid range
     local x2 = math.min(x1 + 1, #func)      -- clamp high: don't exceed array length
     local w1  = x3 - math.floor(x3)         -- fractional part
     local w2  = 1 - w1
     local row1, row2 = func[x1], func[x2]
+    --gcs:send_text(1,tostring(#func[x1]))
     local y = {}
     for i = 1, #row1 do
-        y[i] = w2 * row1[i] + w1 * row2[i]
+        y[i] = w2*row1[i]+w1*row2[i]
+    end
+    return y
+end
+
+-- interpolates matrix array to current time (K stored as 4 rows per timestep)
+local function interpolate_matrix(func, now_p, dataset, dimension)
+    local x1, x3
+    if dataset == "gain" then
+        x1 = math.floor(now_p / gain_td)
+        x3 = now_p / gain_td
+    else
+        gcs:send_text(3, "interpolate_matrix: unknown dataset '" .. tostring(dataset) .. "'")
+        return nil
+    end
+    local num_steps = math.floor(#func / 4)
+    x1 = math.max(1, math.min(x1, num_steps))
+    local x2 = math.min(x1 + 1, num_steps)
+    local w1 = x3 - math.floor(x3)
+    local w2 = 1 - w1
+    local b1 = 4 * (x1 - 1) + 1
+    local b2 = 4 * (x2 - 1) + 1
+    local matrix_1 = {func[b1], func[b1+1], func[b1+2], func[b1+3]}
+    local matrix_2 = {func[b2], func[b2+1], func[b2+2], func[b2+3]}
+    local y = {}
+    for i = 1, 4 do
+        local col = {}
+        for j = 1, dimension do
+            col[j] = w2 * matrix_1[i][j] + w1 * matrix_2[i][j]
+        end
+        y[i] = col
     end
     return y
 end
@@ -443,43 +542,76 @@ local function pct_to_rpm (thr_pct,min_rpm,max_rpm)
 end
 
 
-local function controller()
-    now=millis()
+local function controller(y,u)
+    now=tonumber(tostring(millis()))
+    --gcs:send_text(1,"contrller function started")
+
+        --convert imported data dimensions
+        
+        y_dim={y[1],y[2],y[3],y[4],y[5],y[6],(y[7]+y[8])/2,(y[9]+y[10])/2,y[11],y[12]}
+        gcs:send_text(1,tostring(#y_dim))
+        --u={(y_now[1]+y_now[2])/2,(y_now[3]+y_now[4])/2,y_now[5],y_now[6]}
+    --gcs:send_text(1,"y dimension changed")
+
 
         --interpolation of inputs
         local y_d=interpolate(Y_d,now,"sim")
         local u_d=interpolate(U_d,now,"sim")
-        local y=interpolate(Y,now,"log")
-        local u=interpolate(U,now,"log")
-        local k=interpolate(K,now,"gain")
+        --local y=interpolate(Y,now,"log")
+        --local u=interpolate(U,now,"log")
+        local k=interpolate_matrix(K,now,"gain",10)
 
         if not y or not u or not k then
             gcs:send_text(3,"controller: interpolation returned nil — skipping")
             return update,update_rate
         end
 
+     --gcs:send_text(1,"interpolation done")
+
         --pct/s to rpm/s
-        local u1_rpm=pct_to_rpm(u[1])
-        local u2_rpm=pct_to_rpm(u[2])
-        local u3_rpm=pct_to_rpm(u[3])
-        local u4_rpm=pct_to_rpm(u[4])
+        local u1_rpm=pct_to_rpm(u[1],0,10000)
+        local u2_rpm=pct_to_rpm(u[2],0,10000)
+        local u3_rpm=pct_to_rpm(u[3],0,10000)
+        local u4_rpm=pct_to_rpm(u[4],0,10000)
         local u5_rpm=nil
-        local u_rpm={(u1_rpm+u2_rpm)/2,(u3_rpm+u4_rpm)/2,u[3],u[4]}
+        local u_rpm={(u1_rpm+u2_rpm)/2,(u3_rpm+u4_rpm)/2,u[5],u[6]}
         if (frame_type=="pusher") then
             local u5_rpm=pct_to_rpm(u[5])
-            u_rpm={(u1_rpm+u2_rpm)/2,(u3_rpm+u4_rpm)/2,u5_rpm,u[4]}
+            u_rpm={(u1_rpm+u2_rpm)/2,(u3_rpm+u4_rpm)/2,u5_rpm,u[6]}
         end
 
-        u_rpm={(u1_rpm+u2_rpm)/2,(u3_rpm+u4_rpm)/2,u[3],u[4]}
+    --gcs:send_text(1,"Percentage to rpm conversion complete")   
 
         --error calculation
-        local y_bar=y-y_d
-        local u_bar=u_rpm-u_d
+        local y_bar=mat_sub(y_dim, y_d)
+        local u_bar=mat_sub(u_rpm,u_d)
+
+    gcs:send_text(1,"state and input error complete")
 
         -- cmd vector calculation
         --u_cmd=u_d-k*u_bar
-        local u_cmd=mat_sub(u_d,mat_mul(k,u_bar))
+        for z=1,10 do 
+            gcs:send_text(1,"y_bar")
+            gcs:send_text(1,tostring(y_bar[z]))
+        end
+        for z=1,4 do 
+            for v=1,10 do
+                gcs:send_text(1,"k")
+                gcs:send_text(1,tostring(k[z][v]))
+            end
+        end
+        for z=1,4 do 
+            gcs:send_text(1,"u_d")
+            gcs:send_text(1,tostring(u_d[z]))
+        end
+        local int = mat_mul(k,y_bar)
+        for z=1,4 do 
+            gcs:send_text(1,"int")
+            gcs:send_text(1,tostring(int[z]))
+        end
+        local u_cmd=mat_sub(u_d,int)
 
+    gcs:send_text(1,"input command calculated")
 
         --motor
         --stop motor overide if command is not updated
@@ -604,13 +736,23 @@ local function update()
     if (_triggered==false) then
         controller_trigger()
     end
-
+    if (_triggered==false and dist_m<320) then
+        local y, u = get_current_state()
+    end
+    
     if (_triggered==true) then
+
+        local y, u = get_current_state()
+
         if (tr0==false) then
             controller_init()
         end
-        local y, u = get_current_state()
-        controller()
+        
+        for i=1, 12 do
+            gcs:send_text(1,"y=")
+            gcs:send_text(1,tostring(y[i]))
+        end
+        controller(y,u)
     end
    
 
