@@ -591,25 +591,27 @@ local function controller(y,u)
         -- cmd vector calculation
         --u_cmd=u_d-k*u_bar
         for z=1,10 do 
-            gcs:send_text(1,"y_bar")
-            gcs:send_text(1,tostring(y_bar[z]))
+            gcs:send_text(1,"y_dim")
+            gcs:send_text(1,tostring(y_dim))
         end
-        for z=1,4 do 
-            for v=1,10 do
-                gcs:send_text(1,"k")
-                gcs:send_text(1,tostring(k[z][v]))
-            end
-        end
-        for z=1,4 do 
-            gcs:send_text(1,"u_d")
-            gcs:send_text(1,tostring(u_d[z]))
-        end
-        local int = mat_mul(k,y_bar)
-        for z=1,4 do 
-            gcs:send_text(1,"int")
-            gcs:send_text(1,tostring(int[z]))
-        end
-        local u_cmd=mat_sub(u_d,int)
+        -- for z=1,4 do 
+        --     for v=1,10 do
+        --         gcs:send_text(1,"k")
+        --         gcs:send_text(1,tostring(k[z][v]))
+        --     end
+        -- end
+        -- for z=1,4 do 
+        --     gcs:send_text(1,"u_d")
+        --     gcs:send_text(1,tostring(u_d[z]))
+        -- end
+        
+        -- local int = mat_mul(k,y_bar)
+        -- -- for z=1,4 do 
+        -- --     gcs:send_text(1,"int")
+        -- --     gcs:send_text(1,tostring(int[z]))
+        -- -- end
+        -- local u_cmd=mat_sub(u_d,int)
+        u_cmd={1,1,1,1}
 
     gcs:send_text(1,"input command calculated")
 
@@ -743,15 +745,15 @@ local function update()
     if (_triggered==true) then
 
         local y, u = get_current_state()
-
-        if (tr0==false) then
-            controller_init()
-        end
-        
         for i=1, 12 do
             gcs:send_text(1,"y=")
             gcs:send_text(1,tostring(y[i]))
         end
+        if (tr0==false) then
+            controller_init()
+        end
+        
+        
         controller(y,u)
     end
    
