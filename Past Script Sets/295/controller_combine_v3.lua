@@ -1,17 +1,17 @@
 ------------------------------------------------------------------
 ---                      Parameters                            ---
 ------------------------------------------------------------------
-local update_rate=1.0 -- currently runnign at about 15ms
+local update_rate=10
 local up0=false
 local tr0=false
 
 --controller
-local sim_time_total=21.9942--18.9983
+local sim_time_total=17.7681928636437
 local sim_time_steps=33
 local frame_type="tilt";
     --type == tilt:quadtillt
     --type == pusher:quad+pusher/puller
-local gain_td=sim_time_total/18 
+local gain_td=0.1 
 local sim_td=sim_time_total/sim_time_steps
 local log_td=10
 
@@ -27,10 +27,15 @@ local elv_chl=1
 
 local quad_rpm_min=0
 local quad_rpm_max=10000
-
+local pusher_rpm_min=0
+local pusher_rpm_max=10000
 local motor_overide_flag=false
-local u_cmd_pwm ={nil,nil,nil,nil}
-local k_roll=-0.2
+local u_cmd_1_pwm
+local u_cmd_2_pwm
+local u_cmd_3_pwm
+local u_cmd_4_pwm
+local u_cmd_5_pwm
+local k_roll=0.2
 local expo=20*180/math.pi
 local elevator_overide_flag=false
 local elevator_abs_max=math.pi/4
@@ -40,25 +45,20 @@ local u1_prev
 local u2_prev
 local u3_prev
 local u4_prev
-
+local u5_prev
 local u_elevator_prev
 local u_tilt_prev
 local t_0=0
 local z_flag
 local now=0
-local update_interval_motors=1 --300 ish hz (not anymore)
-local update_interval_elevator=1 --10hz (not anymore)
-local update_interval_tilt=1 --10hz (not anymore)
+local update_interval_motors=3.3 --300 ish hz
+local update_interval_elevator=100 --10hz
+local update_interval_tilt=100 --10hz
 local update_timestamp_motors=0
 local update_timestamp_elevator=0
 local update_timestamp_tilt=0
 local update_rate=10
 local cal_flag=0
-local endflag=0
-local max_motor_rpm=0
-local scaler=1
-local scaleflag=false
-
 
 
 
@@ -462,13 +462,13 @@ local function interpolate(func, now_p, dataset)
     local x1, x3
     
     if dataset == "gain" then
-        x1 = math.floor((now_p / gain_td)+1)
+        x1 = math.floor(now_p / gain_td)
         x3 = now_p / gain_td
     elseif dataset == "sim" then
-        x1 = math.floor((now_p / sim_td)+1)
+        x1 = math.floor(now_p / sim_td)
         x3 = now_p / sim_td
     elseif dataset == "log" then
-        x1 = math.floor((now_p / log_td)+1)
+        x1 = math.floor(now_p / log_td)
         x3 = now_p / log_td
     else
         gcs:send_text(3, "interpolate: unknown dataset '" .. tostring(dataset) .. "'")
@@ -491,7 +491,7 @@ end
 local function interpolate_matrix(func, now_p, dataset, dimension)
     local x1, x3
     if dataset == "gain" then
-        x1 = math.floor((now_p / gain_td)+1)
+        x1 = math.floor(now_p / gain_td)
         x3 = now_p / gain_td
     else
         gcs:send_text(3, "interpolate_matrix: unknown dataset '" .. tostring(dataset) .. "'")
@@ -542,22 +542,9 @@ end
 --converts throttle values from rpm to %
 local function rpm_to_pct (rpm,min,max)
     local pct=((rpm)/(max))*100
-    if (rpm>max and rpm>max_motor_rpm) then
-        max_motor_rpm=rpm
-        scaleflag=true
-        
-    else 
-        scaleflag=false
-    end
     pct_clamp=math.min(100,(math.max(pct,0)))
     --gcs:send_text(1,string.format("rpm = %f,min = %f,max = %f, pct = %f",rpm,min,max,pct_clamp))
     return pct_clamp
-end
-
--- calculates scaler for all throttles to ensure attitude stability
-local function motor_clip_scale(max_motor_rpm)
-    scaler = quad_rpm_max/max_motor_rpm
-    return scaler
 end
 
 --converts throttle values from %(expo) to rpm 
@@ -611,7 +598,6 @@ local function controller(u_cmd,y)
         if (now-update_timestamp_motors>update_interval_motors or motor_overide_flag==false) then
             --cmd rpm --> pct --> norm--> expo --> pwm 
             motor_overide_flag=true
-            max_motor_rpm=0;
             --update current motor values
             u1_prev=pct_to_rpm(y[7],quad_rpm_min,quad_rpm_max)
             u2_prev=pct_to_rpm(y[8],quad_rpm_min,quad_rpm_max)
@@ -623,39 +609,28 @@ local function controller(u_cmd,y)
             local roll =ahrs:get_roll_rad() --rads
             local roll_compensation_rpm=k_roll*roll
 
-            --update % values
-            local u_cmd_pct={nil,nil,nil,nil}
-            u_cmd_pct[1] = rpm_to_pct((u_cmd[1]*(update_interval_motors/1000))+u1_prev-roll_compensation_rpm*math.cos(u_tilt_prev),quad_rpm_min,quad_rpm_max)
-            u_cmd_pct[2] = rpm_to_pct((u_cmd[1]*(update_interval_motors/1000))+u2_prev+roll_compensation_rpm*math.cos(u_tilt_prev),quad_rpm_min,quad_rpm_max)
-            u_cmd_pct[3] = rpm_to_pct((u_cmd[2]*(update_interval_motors/1000))+u3_prev-roll_compensation_rpm,quad_rpm_min,quad_rpm_max)
-            u_cmd_pct[4] = rpm_to_pct((u_cmd[2]*(update_interval_motors/1000))+u4_prev+roll_compensation_rpm,quad_rpm_min,quad_rpm_max)
-
-            --clipping scaler
-            if  (scaleflag==true) then
-                motor_clip_scale(max_motor_rpm)
-            else 
-                scaler=1
-            end
-
             --update pwm values
-            gcs:send_text(1,string.format("u_cmd_pct = %f, %f, %f, %f",u_cmd_pct[1],u_cmd_pct[2],u_cmd_pct[3],u_cmd_pct[4]))
-            gcs:send_text(1,string.format("scaler = %f",scaler))
-            u_cmd_pwm[1]=pct_to_pwm(scaler*u_cmd_pct[1])
-            u_cmd_pwm[2]=pct_to_pwm(scaler*u_cmd_pct[2])
-            u_cmd_pwm[3]=pct_to_pwm(scaler*u_cmd_pct[3])
-            u_cmd_pwm[4]=pct_to_pwm(scaler*u_cmd_pct[4])
-
+            u_cmd_1_pwm=pct_to_pwm(rpm_to_pct((u_cmd[1]*(update_interval_motors/1000))+u1_prev-roll_compensation_rpm*math.cos(u_tilt_prev),quad_rpm_min,quad_rpm_max))
+            u_cmd_2_pwm=pct_to_pwm(rpm_to_pct((u_cmd[1]*(update_interval_motors/1000))+u2_prev+roll_compensation_rpm*math.cos(u_tilt_prev),quad_rpm_min,quad_rpm_max))
+            u_cmd_3_pwm=pct_to_pwm(rpm_to_pct((u_cmd[2]*(update_interval_motors/1000))+u3_prev-roll_compensation_rpm,quad_rpm_min,quad_rpm_max))
+            u_cmd_4_pwm=pct_to_pwm(rpm_to_pct((u_cmd[2]*(update_interval_motors/1000))+u4_prev+roll_compensation_rpm,quad_rpm_min,quad_rpm_max))
+            u_cmd_5_pwm=nil
+            if (frame_type=="pusher") then
+                u_cmd_5_pwm=pct_to_rpm(rpm_to_pct((u_cmd[3]*(update_interval_motors/1000))+u5_prev,pusher_rpm_min,pusher_rpm_max))
+            end
         end
 
         --motor overide
         if (motor_overide_flag) then
             -- overide output 
-            --gcs:send_text(1,string.format("m1 pwm = %f",u_cmd_pwm[1]))
-            SRV_Channels:set_output_pwm_chan_timeout(m1_chl, math.floor(u_cmd_pwm[1]),update_rate)
-            SRV_Channels:set_output_pwm_chan_timeout(m2_chl, math.floor(u_cmd_pwm[2]),update_rate)
-            SRV_Channels:set_output_pwm_chan_timeout(m3_chl, math.floor(u_cmd_pwm[3]),update_rate)
-            SRV_Channels:set_output_pwm_chan_timeout(m4_chl, math.floor(u_cmd_pwm[4]),update_rate)
- 
+            --gcs:send_text(1,string.format("m1 pwm = %f",u_cmd_1_pwm))
+            SRV_Channels:set_output_pwm_chan_timeout(m1_chl, math.floor(u_cmd_1_pwm),update_rate)
+            SRV_Channels:set_output_pwm_chan_timeout(m2_chl, math.floor(u_cmd_2_pwm),update_rate)
+            SRV_Channels:set_output_pwm_chan_timeout(m3_chl, math.floor(u_cmd_3_pwm),update_rate)
+            SRV_Channels:set_output_pwm_chan_timeout(m4_chl, math.floor(u_cmd_4_pwm),update_rate)
+            if (frame_type=="pusher") then
+                SRV_Channels:set_output_pwm_chan_timeout(m5_chl, u_cmd_5_pwm,update_rate)
+            end
         end
        
 
@@ -705,17 +680,15 @@ local function calculate_cmd(y,u)
 
 
         --interpolation of inputs
-        gcs:send_text(1,string.format("y index = %f, t-t_0 = %f",((now-t_0)/1000)/sim_td,now-t_0))
-        if ((((now-t_0)/1000)/sim_td)>sim_time_total) then
-            endflag=1
-        end
+        gcs:send_text(1,string.format("y index = %f",((now-t_0)/1000)/sim_td))
+
         local y_d=interpolate(Y_d,((now-t_0)/1000),"sim")
         local u_d=interpolate(U_d,((now-t_0)/1000),"sim")
         local k=interpolate_matrix(K,((now-t_0)/1000),"gain",10)
 
 
 
-        --gcs:send_text(1,"interpolation done")
+        gcs:send_text(1,"interpolation done")
         
 
         --pct/s to rpm/s
@@ -747,19 +720,11 @@ local function calculate_cmd(y,u)
             line=0
         end
 
-        -- local u_cmd=u
-        -- gcs:send_text(1,string.format("u1 = %f",u_cmd[1]))
         local u_cmd={0,0,0,0}
         for i=1,4 do
-            u_cmd[i]=u_d[i]-Ky_bar[i];
+            u_cmd[i]=u_rpm[i]-Ky_bar[i];
         end
-        gcs:send_text(1,"input compute done")
-
-        --fix axis
-        for i=1,4 do
-            u_cmd[i]=-u_cmd[i]
-        end
-
+        --gcs:send_text(1,"input compute done")
         return u_cmd
     end
 end
@@ -792,7 +757,7 @@ local function update()
         local y, u = get_current_state()
     end
     
-    if (_triggered==true and endflag==0) then
+    if (_triggered==true) then
         if (tr0==false) then
             controller_init()
         end
@@ -804,9 +769,8 @@ local function update()
         end
 
         local count=0
-        if (now-t_0>=(count+1)*2000) then
+        if (now-t_0>=(count+1)*1000) then
             gcs:send_text(1,"controller override enagaged")
-            count=count+1
         end
     end
    
