@@ -1,17 +1,17 @@
 ------------------------------------------------------------------
 ---                      Parameters                            ---
 ------------------------------------------------------------------
-local update_rate_srv=40 -- currently runnign at about 15ms
+local update_rate=1.0 -- currently runnign at about 15ms
 local up0=false
 local tr0=false
 
 --controller
-local sim_time_total=10
-local sim_time_steps=81
+local sim_time_total=21.9942--18.9983
+local sim_time_steps=33
 local frame_type="tilt";
     --type == tilt:quadtillt
     --type == pusher:quad+pusher/puller
-local gain_td=sim_time_total/100 
+local gain_td=sim_time_total/18 
 local sim_td=sim_time_total/sim_time_steps
 local log_td=10
 
@@ -30,7 +30,6 @@ local quad_rpm_max=10000
 
 local motor_overide_flag=false
 local u_cmd_pwm ={nil,nil,nil,nil}
-local u_cmd ={nil,nil,nil,nil}
 local k_roll=-0.2
 local expo=20*180/math.pi
 local elevator_overide_flag=false
@@ -47,22 +46,18 @@ local u_tilt_prev
 local t_0=0
 local z_flag
 local now=0
-local update_interval_motors=30 --300 ish hz (not anymore)
-local update_interval_elevator=30 --10hz (not anymore)
-local update_interval_tilt=30 --10hz (not anymore)
+local update_interval_motors=1 --300 ish hz (not anymore)
+local update_interval_elevator=1 --10hz (not anymore)
+local update_interval_tilt=1 --10hz (not anymore)
 local update_timestamp_motors=0
 local update_timestamp_elevator=0
 local update_timestamp_tilt=0
-local update_rate=1
+local update_rate=10
 local cal_flag=0
 local endflag=0
 local max_motor_rpm=0
 local scaler=1
 local scaleflag=false
-
----debug arible
-local first_flag=false
-
 
 
 
@@ -114,7 +109,6 @@ local _obs_prev_tilt, _obs_prev_elev = 0, 0
 local _obs_prev_lat_dist = nil
 local _obs_last_ms  = 0
 local _obs_vtol_loc = nil
-local _takeoff_alt  = nil   -- MSL altitude (m) at takeoff, cached from home
 
 
 ------------------------------------------------------------------
@@ -170,14 +164,14 @@ local function get_current_state()
         _obs_prev_lat_dist = lat_dist
     end
 
-    -- Height above takeoff point (home altitude cached once)
+    -- Height above ground
     local height = 0
     if current_loc then
-        if not _takeoff_alt then
-            local home = ahrs:get_home()
-            if home then _takeoff_alt = home:alt() / 100 end
+        height = terrain:height_above_terrain(false)
+        if not height then
+            local land_alt = _obs_vtol_loc and _obs_vtol_loc:alt() / 100 or 0
+            height = current_loc:alt() / 100 - land_alt
         end
-        height = current_loc:alt() / 100 - (_takeoff_alt or 0)
     end
 
     -- Height rate
@@ -513,7 +507,7 @@ local function interpolate_matrix(func, now_p, dataset, dimension)
     local matrix_1 = {func[b1], func[b1+1], func[b1+2], func[b1+3]}
     local matrix_2 = {func[b2], func[b2+1], func[b2+2], func[b2+3]}
     local y = {}
-    for i = 4, 1 do
+    for i = 1, 4 do
         local col = {}
         for j = 1, dimension do
             col[j] = w2 * matrix_1[i][j] + w1 * matrix_2[i][j]
@@ -596,15 +590,14 @@ local function controller(u_cmd,y)
                 
                 --update pwm value
                 elevator_overide_flag=true
-                
                 local u_cmd_tilt_norm=((update_interval_tilt/1000)*u_cmd[3]+u_tilt_prev)/tilt_max
                 tilt_pwm=1500+u_cmd_tilt_norm*500
             end
 
             --overide tilt command
             if (tilt_overide_flag) then
-                SRV_Channels:set_output_pwm_chan_timeout(tilt_chl, math.floor(tilt_pwm),update_rate_srv)
-                SRV_Channels:set_output_pwm_chan_timeout(tilt_chl_2, math.floor(tilt_pwm),update_rate_srv)
+                SRV_Channels:set_output_pwm_chan_timeout(tilt_chl, math.floor(tilt_pwm),update_rate)
+                SRV_Channels:set_output_pwm_chan_timeout(tilt_chl_2, math.floor(tilt_pwm),update_rate)
             end
         end
 
@@ -620,29 +613,22 @@ local function controller(u_cmd,y)
             motor_overide_flag=true
             max_motor_rpm=0;
             --update current motor values
-            -- u1_prev=pct_to_rpm(y[7],quad_rpm_min,quad_rpm_max)
-            -- u2_prev=pct_to_rpm(y[8],quad_rpm_min,quad_rpm_max)
-            -- u3_prev=pct_to_rpm(y[9],quad_rpm_min,quad_rpm_max)
-            -- u4_prev=pct_to_rpm(y[10],quad_rpm_min,quad_rpm_max)
-            -- if (frame_type=="pusher") then
-            --     u5_prev=pct_to_rpm(y[11],quad_rpm_min,quad_rpm_max)
-            -- end
-
-            u1_prev=100*y[7]
-            u2_prev=100*y[8]
-            u3_prev=100*y[9]
-            u4_prev=100*y[10]
-
+            u1_prev=pct_to_rpm(y[7],quad_rpm_min,quad_rpm_max)
+            u2_prev=pct_to_rpm(y[8],quad_rpm_min,quad_rpm_max)
+            u3_prev=pct_to_rpm(y[9],quad_rpm_min,quad_rpm_max)
+            u4_prev=pct_to_rpm(y[10],quad_rpm_min,quad_rpm_max)
+            if (frame_type=="pusher") then
+                u5_prev=pct_to_rpm(y[11],quad_rpm_min,quad_rpm_max)
+            end
             local roll =ahrs:get_roll_rad() --rads
             local roll_compensation_rpm=k_roll*roll
 
             --update % values
             local u_cmd_pct={nil,nil,nil,nil}
-            u_cmd_pct[1] = rpm_to_pct((-u_cmd[1]*(update_interval_motors/1000))+u1_prev-roll_compensation_rpm*math.cos(u_tilt_prev),quad_rpm_min,quad_rpm_max)
-            u_cmd_pct[2] = rpm_to_pct((-u_cmd[1]*(update_interval_motors/1000))+u2_prev+roll_compensation_rpm*math.cos(u_tilt_prev),quad_rpm_min,quad_rpm_max)
-            u_cmd_pct[3] = rpm_to_pct((-u_cmd[2]*(update_interval_motors/1000))+u3_prev-roll_compensation_rpm,quad_rpm_min,quad_rpm_max)
-            u_cmd_pct[4] = rpm_to_pct((-u_cmd[2]*(update_interval_motors/1000))+u4_prev+roll_compensation_rpm,quad_rpm_min,quad_rpm_max)
-            gcs:send_text(1,string.format("u_cmd_pct 1 = %f , u1_prev = %f, dt = %f",u_cmd_pct[1],u1_prev,update_interval_motors/1000))
+            u_cmd_pct[1] = rpm_to_pct((u_cmd[1]*(update_interval_motors/1000))+u1_prev-roll_compensation_rpm*math.cos(u_tilt_prev),quad_rpm_min,quad_rpm_max)
+            u_cmd_pct[2] = rpm_to_pct((u_cmd[1]*(update_interval_motors/1000))+u2_prev+roll_compensation_rpm*math.cos(u_tilt_prev),quad_rpm_min,quad_rpm_max)
+            u_cmd_pct[3] = rpm_to_pct((u_cmd[2]*(update_interval_motors/1000))+u3_prev-roll_compensation_rpm,quad_rpm_min,quad_rpm_max)
+            u_cmd_pct[4] = rpm_to_pct((u_cmd[2]*(update_interval_motors/1000))+u4_prev+roll_compensation_rpm,quad_rpm_min,quad_rpm_max)
 
             --clipping scaler
             if  (scaleflag==true) then
@@ -652,8 +638,8 @@ local function controller(u_cmd,y)
             end
 
             --update pwm values
-            -- gcs:send_text(1,string.format("u_cmd_pct = %f, %f, %f, %f",u_cmd_pct[1],u_cmd_pct[2],u_cmd_pct[3],u_cmd_pct[4]))
-            -- gcs:send_text(1,string.format("scaler = %f",scaler))
+            gcs:send_text(1,string.format("u_cmd_pct = %f, %f, %f, %f",u_cmd_pct[1],u_cmd_pct[2],u_cmd_pct[3],u_cmd_pct[4]))
+            gcs:send_text(1,string.format("scaler = %f",scaler))
             u_cmd_pwm[1]=pct_to_pwm(scaler*u_cmd_pct[1])
             u_cmd_pwm[2]=pct_to_pwm(scaler*u_cmd_pct[2])
             u_cmd_pwm[3]=pct_to_pwm(scaler*u_cmd_pct[3])
@@ -665,16 +651,12 @@ local function controller(u_cmd,y)
         if (motor_overide_flag) then
             -- overide output 
             --gcs:send_text(1,string.format("m1 pwm = %f",u_cmd_pwm[1]))
-            SRV_Channels:set_output_pwm_chan_timeout(m1_chl, math.floor(u_cmd_pwm[1]),update_rate_srv)
-            SRV_Channels:set_output_pwm_chan_timeout(m2_chl, math.floor(u_cmd_pwm[2]),update_rate_srv)
-            SRV_Channels:set_output_pwm_chan_timeout(m3_chl, math.floor(u_cmd_pwm[3]),update_rate_srv)
-            SRV_Channels:set_output_pwm_chan_timeout(m4_chl, math.floor(u_cmd_pwm[4]),update_rate_srv)
+            SRV_Channels:set_output_pwm_chan_timeout(m1_chl, math.floor(u_cmd_pwm[1]),update_rate)
+            SRV_Channels:set_output_pwm_chan_timeout(m2_chl, math.floor(u_cmd_pwm[2]),update_rate)
+            SRV_Channels:set_output_pwm_chan_timeout(m3_chl, math.floor(u_cmd_pwm[3]),update_rate)
+            SRV_Channels:set_output_pwm_chan_timeout(m4_chl, math.floor(u_cmd_pwm[4]),update_rate)
  
         end
-        -- SRV_Channels:set_output_pwm_chan_timeout(m1_chl,1000,update_rate_srv)
-        -- SRV_Channels:set_output_pwm_chan_timeout(m2_chl,1000,update_rate_srv)
-        -- SRV_Channels:set_output_pwm_chan_timeout(m3_chl,1000,update_rate_srv)
-        -- SRV_Channels:set_output_pwm_chan_timeout(m4_chl,1000 ,update_rate_srv)
        
 
         --elevator
@@ -695,13 +677,12 @@ local function controller(u_cmd,y)
             local elevator_rate_clamp = math.min(math.pi/4,math.max(-1*(math.pi/4)))
             local u_cmd_elevator_norm=((update_interval_elevator/1000)*elevator_rate_clamp+u_elevator_prev)/elevator_abs_max
             elevator_pwm=1500+math.floor(u_cmd_elevator_norm*500)
-            -- gcs:send_text(1,string.format("u_cmd_elevator_norm = %f, elevator_pwm = %f, u_cmd[4] = %f, u_elevator_prev = %f",u_cmd_elevator_norm,elevator_pwm,u_cmd[4],u_elevator_prev))
-            -- gcs:send_text(1,string.format("u_cmd[4]=%f",u_cmd[4]))
+            --gcs:send_text(1,string.format("u_cmd_elevator_norm = %f, elevator_pwm = %f, u_cmd[4] = %f, u_elevator_prev = %f",u_cmd_elevator_norm,elevator_pwm,u_cmd[4],u_elevator_prev))
         end
 
         -- overide elevator
         if (elevator_overide_flag) then
-            SRV_Channels:set_output_pwm_chan_timeout(elv_chl, math.floor(elevator_pwm),update_rate_srv)--2000 max pitch dowm 1000 max pitch up
+            SRV_Channels:set_output_pwm_chan_timeout(elv_chl, math.floor(elevator_pwm),update_rate)
         end
 
 
@@ -718,24 +699,20 @@ local function calculate_cmd(y,u)
 
             --convert imported data dimensions
             
-            y_dim={-y[1],-y[2],y[3],-y[4],-y[5],y[6],((y[7]+y[8])/2)*100,((y[9]+y[10])/2)*100,y[11],y[12]}
-            --gcs:send_text(1,string.format("y_dim 4 = %f",y_dim[4]))
+            y_dim={y[1],y[2],y[3],y[4],y[5],y[6],(y[7]+y[8])/2,(y[9]+y[10])/2,y[11],y[12]}
         
         --gcs:send_text(1,"y dimension changed")
 
 
         --interpolation of inputs
-        --gcs:send_text(1,string.format("y index = %f, t-t_0 = %f",((now-t_0)/1000)/sim_td,now-t_0))
-        if ((((now-t_0)/1000))>sim_time_total) then
+        gcs:send_text(1,string.format("y index = %f, t-t_0 = %f",((now-t_0)/1000)/sim_td,now-t_0))
+        if ((((now-t_0)/1000)/sim_td)>sim_time_total) then
             endflag=1
         end
         local y_d=interpolate(Y_d,((now-t_0)/1000),"sim")
         local u_d=interpolate(U_d,((now-t_0)/1000),"sim")
         local k=interpolate_matrix(K,((now-t_0)/1000),"gain",10)
 
-        local y_d_fixxed={y_d[1],y_d[2],y_d[3],y_d[4],-y_d[5],y_d[6],y_d[7],y_d[8],y_d[9],y_d[10]}
-        --gcs:send_text(1,string.format("y_ned' 4 = %f",y_d_not_NED[4]))
-        --gcs:send_text(1,string.format("y_d_not_NED= %f",y_d_not_NED))
 
 
         --gcs:send_text(1,"interpolation done")
@@ -752,7 +729,7 @@ local function calculate_cmd(y,u)
         local y_bar={0,0,0,0,0,0,0,0,0,0}
         local u_bar={0,0,0,0}
         for z=1,10 do
-            y_bar[z]=y_dim[z]-y_d_fixxed[z]
+            y_bar[z]=y_dim[z]-y_d[z]
             if (z<=4) then
                 u_bar[z]=u_rpm[z]-u_d[z]
             end
@@ -762,49 +739,27 @@ local function calculate_cmd(y,u)
         --u_cmd=u_d-K*Y
         local Ky_bar={0,0,0,0,0,0,0,0,0,0}
         local line=0
-        for i=4,1 do
-            for j=10,1 do
+        for i=1,4 do
+            for j=1,10 do
                 line=line+k[i][j]*y_bar[j]
             end
             Ky_bar[i]=line
             line=0
         end
 
+        -- local u_cmd=u
+        -- gcs:send_text(1,string.format("u1 = %f",u_cmd[1]))
+        local u_cmd={0,0,0,0}
         for i=1,4 do
             u_cmd[i]=u_d[i]-Ky_bar[i];
         end
-        --u_cmd=u_d
-        i=1
+        gcs:send_text(1,"input compute done")
 
-        if first_flag==false then
-            while i<11 do
-                gcs:send_text(1,string.format("y_d_fixxed [%f] = %f",i,y_d_fixxed[i]))
-                gcs:send_text(1,string.format("y [%f] = %f",i,y_dim[i]))
-                if i<=4 then
-                    gcs:send_text(1,string.format("u_cmd [%f] = %f",i,u_cmd[i]))
-                end
-                i=i+1
-                if i==10 then
-                    first_flag=true
-                end
-            end
-    end
-   
-        
-        
-        
-        -- u_cmd[1]=-u_d[1]-Ky_bar[1];
-        -- u_cmd[2]=-u_d[2]-Ky_bar[2];
-        -- u_cmd[3]=u_d[3]-Ky_bar[3];
-        -- u_cmd[4]=-u_d[4]-Ky_bar[4];
+        --fix axis
+        for i=1,4 do
+            u_cmd[i]=-u_cmd[i]
+        end
 
-        
-        -- u_cmd[4]=-u_cmd[4]
-        -- u_cmd[1]=-u_cmd[1]
-        -- u_cmd[2]=-u_cmd[2]
-        -- for i=1,4 do
-        --     u_cmd[i]=-u_cmd[i]
-        -- end
         return u_cmd
     end
 end
@@ -837,8 +792,6 @@ local function update()
         local y, u = get_current_state()
     end
     
-    --SRV_Channels:set_output_pwm_chan_timeout(elv_chl, 2000,update_rate_srv)
-
     if (_triggered==true and endflag==0) then
         if (tr0==false) then
             controller_init()
@@ -852,13 +805,13 @@ local function update()
 
         local count=0
         if (now-t_0>=(count+1)*2000) then
-            --gcs:send_text(1,"controller override enagaged")
+            gcs:send_text(1,"controller override enagaged")
             count=count+1
         end
     end
    
 
-    
+    --SRV_Channels:set_output_pwm_chan_timeout(1, 2000,update_rate)
 
     return update,update_rate
 end
