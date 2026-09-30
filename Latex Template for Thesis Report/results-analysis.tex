@@ -1,0 +1,39 @@
+\chapter{Results and Analysis}
+\vspace{-1.4em}
+
+When presenting your results, it is important that you organise them in an orderly manner to avoid clusters of information. Be critical and properly analyse what the results mean. Provide insightful discussion and explanation. Consider using other published articles to support or argue your results. Make sure it clear which work are yours and which are background materials. Also, include the implication of your results.
+
+\section{Experimental Results}
+
+\section{Subheading 1} 
+How to reference Figure ~\ref{table:example}.
+
+\begin{table}[ht]
+    \begin{center} 
+        \caption{Table captions are above tables. Tables are to be centered on the page.} 
+        \begin{tabular}{ccc} 
+            \toprule 
+            No & Student & Task \\ 
+            \midrule 
+            1 & A & X \\ 
+            2 & B & Y \\ 
+            3 & C & Z \\ 
+            \bottomrule 
+        \end{tabular} 
+        \label{table:example} 
+    \end{center} 
+\end{table}
+
+\section{Analysis and Discussion}
+
+\section{Subheading 2}
+
+\subsection{How to do math equations}
+% \( and \) tell latex to do an inline equation. \[ and \] creates a new, separate line for the equation. equation and math environments create a dedicated space for maths equations, with equation numbers that can be referenced.
+The well known Pythagorean theorem \(x^2 + y^2 = z^2\) was proved to be invalid for other exponents. Meaning equation \ref{pythag_fail} has no integer solutions:  
+\[x^n + y^n = z^n\]
+
+\begin{equation}
+    x^n + y^n = z^n
+    \label{pythag_fail}
+\end{equation}

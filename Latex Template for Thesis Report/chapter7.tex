@@ -1,0 +1,68 @@
+\chapter{Figure and Equations formatting}
+\vspace{-1.4em}
+
+\section{cut outs}
+
+\subsection{wireless comms chapter 2}
+Another factor which has a strong influence on the fading channel is the Doppler Effect. The Doppler Effect 
+occurs when a receiver or transmitter moves location as seen in Figure~\ref{fig:Doppler}. 
+\begin{figure}[ht]
+ \begin{center}
+ %\includegraphics[width=12.5cm]{images/q4a}
+%trim option's parameter order: left bottom right top
+ \includegraphics[trim = 26.9mm 227mm 66.4mm 26.4mm, clip, width=12.5cm]{images/Doppler}
+ \end{center} 
+ \vspace{-1cm}
+ \caption{Multipath Induced Doppler Effect~\cite{Goldsmith_2005}}
+ \label{fig:Doppler}
+\end{figure}
+The movement of the receiver or transmitter affects the relative locations of reflectors in the wireless 
+environment. As stated earlier the reflectors allow alternate paths for signal propagation to the receiver. 
+As the relative location of objects change when the receiver or transmitter move, then a different set of 
+multipath signals are experienced at the receiver. This phenomenon gives rise to the apparent time-varying 
+nature of the channel and leads to rapid changes in the signal strength over small distances.
+
+\subsection{system model chapter 3}
+Nakagami-m Fading
+The fading amplitude ($H$) in a wireless channel is generally modelled as Nakagami-m distributed (REFERENCE). As m approaches infinity, the Nakagami distribution approaches one and this scenario represents the case of no fading. Setting the value of m to one, results in the well known case of Rayleigh fading and this type of is used ubiquitously throughout this thesis. Thus, it is evident that different values for m result in different fading distributions which are relevant to different transmission environments.
+
+
+
+
+
+\section{Attenuation in the Wireless Medium}
+
+example code
+
+\textbf{matlab figures}
+\begin{figure}[ht]
+ \begin{center}
+  %\includegraphics[width=12.5cm]{images/q4a}
+%trim option's parameter order: left bottom right top
+  \includegraphics[trim = 32.5mm 94mm 31mm 94mm, clip, width=12.5cm]{images/q2iii}
+  \end{center}
+
+ \vspace{-1cm}
+ %\includegraphics[width=12.5cm]{images/propagation_effects}
+ \caption{Path loss, shadowing, and multipath versus distance~\cite{Goldsmith_2005}}
+ \label{fig:prop_effects}
+\end{figure}
+
+
+Italics
+\textit{large-scale propagation effects} 
+\hilight{($100$-$1000$ m)}
+
+
+Subequations
+\begin{align}
+ y(x) &= \sum_0^{\infty}a_nx^{n+r}     \label{eqn:frobenius 6}\\
+ \implies y'(x) &= \sum_0^{\infty}(n+r)a_nx^{n+r - 1}	\label{eqn: frobenius 7}  \\
+ \implies y''(x) &= \sum_0^{\infty}(n+r-1)(n+r)a_nx^{n+r - 2}	\label{eqn: frobenius 8} 
+\end{align}
+
+
+matlab code put in here
+\begin{verbatim*}
+ 
+\end{verbatim*}

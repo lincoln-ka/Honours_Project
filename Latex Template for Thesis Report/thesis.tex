@@ -1,0 +1,190 @@
+% ANU ENGN4200 - Individual Project Thesis 2020 Template
+% Originally supplied by Wojciech Lipinksi
+% Modified and updated by Chris Bodger - u5395595 
+
+\documentclass[a4paper,11pt]{report}
+
+% import packages
+\usepackage{anuthesis}
+\usepackage{ucs}
+\usepackage{inputenc}
+%\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage[australian]{babel}
+\usepackage{fontenc}
+\usepackage{graphicx}
+
+\usepackage{comment}
+\usepackage{mathrsfs}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{fancyvrb}
+\usepackage{subfig}
+\usepackage{appendix}
+\usepackage[bw,numbered]{mcode}
+\usepackage[nottoc,numbib]{tocbibind}
+\usepackage[square,numbers,sort]{natbib}
+
+
+
+%===============================================================================
+%             Margins
+%===============================================================================
+\usepackage[top=20mm, bottom=20mm ,left=20mm, right=20mm]{geometry}
+
+%===============================================================================
+%     Setting page header format
+%===============================================================================
+\pagestyle{fancyplain}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}{}}
+\renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapter\ #1}{}}
+\fancyhf{}
+\lhead{\fancyplain{}{\leftmark}}
+\rhead{\fancyplain{}{\rightmark}}
+\rfoot{\textbf{\thepage}}
+
+\makeatletter
+\def\listoffigures{
+\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
+ \fi\chapter*{List of Figures\@mkboth{List of Figures}{List of Figures}}
+ \@starttoc{lof}\if@restonecol\twocolumn\fi
+ }
+\makeatother
+
+
+%===============================================================================
+%             Authorship              
+% These parameters are used throughtout the template. 
+% Set the details to suit your project
+%===============================================================================
+\def\THETITLE{ArduPilot Implementation of Optimal Control for Tilt Rotor UAV Landing}
+\title{\THETITLE}
+\def\THEAUTHOR{Lincoln Karavas}
+\author{\THEAUTHOR}
+\def\studentID{U7091679}
+\def\supervisor{Mr. Mathew Hampsey}
+\def\examiner{Prof. Robert Mahony}
+\date{\today}
+
+\begin{document}
+  \setcounter{secnumdepth}{5}
+  \setcounter{tocdepth}{7}
+  \linespread{1.2}
+  \selectfont
+  \pagenumbering{roman}  % first use Roman numerals for page numbers
+  
+  %=============================================================================
+  %         Title Page
+  %=============================================================================
+  \begin{titlepage}
+    %\enlargethispage{2cm}
+    \vspace*{\fill}
+    \begin{center}
+
+      \makeatletter
+      \huge\textbf{\THETITLE} \\[1.5cm]
+      \large A thesis submitted in part fulfilment of the degree of \\
+      \large Bachelor of Engineering (Honours)\\ [1.5cm]
+      \large\textbf{by \\ \THEAUTHOR\ \\ \studentID} \\[1.5cm]
+      \normalsize\textbf{Supervisor: \supervisor} \\[0.1cm]
+      \normalsize\textbf{Examiner: \examiner} \\[1.5cm]
+      %\thismonth
+      \makeatother
+      
+      \vspace*{\fill}
+      \includegraphics[width=70mm]{images/logo} \\[3cm]
+      \vspace*{-1.5cm}
+      \Large College of Engineering and Computer Science\\
+      The Australian National University \\ [1.5cm]
+      \normalsize\thismonth \\
+    \end{center}
+    \vspace*{\fill}
+  \end{titlepage}
+
+  % include statements effectively insert the contents of the named file.
+  % They are not necessary, but are useful for organising your work.
+  % They always start a new page.
+  
+  %=============================================================================
+  %         Plagerism
+  %=============================================================================
+  % includes the contents of the file plagerism-statement.tex
+  \include{plagerism-statement}
+
+  %=============================================================================
+  %       Acknowledgements
+  %=============================================================================
+  % include the contents of the file thanks.tex
+  \include{thanks}  
+  
+  
+  %=============================================================================
+  %         Abstract
+  %=============================================================================
+  % include the contents of the file abstract.tex
+  \include{abstract}
+
+  %=============================================================================
+  %      Contents Page
+  %=============================================================================
+  \selectfont
+  \tableofcontents
+
+  %=============================================================================
+  %      List of Figures
+  %=============================================================================
+  \listoffigures % makes a list of figures
+  \addcontentsline{toc}{chapter}{List of Figures}
+
+  %=============================================================================
+  %      List of Tables
+  %=============================================================================
+  \listoftables  % uncomment this if you have tables
+  \addcontentsline{toc}{chapter}{List of Tables}
+
+  %=============================================================================
+  %      Abbreviations
+  %=============================================================================
+  \selectfont
+  \include{abbreviations}
+
+  % Change settings for for Thesis body
+  \pagenumbering{arabic} % switch to Arabic numerals for page numbers
+  \setcounter{page}{1}  % set page number to 1
+
+  %=============================================================================
+  %      Thesis Body
+  %=============================================================================
+  % includes contents of all sections to be displayed in the thesis document. uncomment the extra chapters if necessary
+  \include{introduction}
+  \include{background}
+  \include{methodology}
+  \include{results-analysis}
+  \include{conclusions-future}
+  %\include{chapter6}
+  %\include{chapter7}
+
+  %=============================================================================
+  %      Appendix
+  %=============================================================================
+  \appendix
+  \renewcommand{\chaptermark}[1]{\markboth{Appendix \thechapter\ #1}{}}
+  \include{appendix1}
+  \include{appendix2}
+  
+  
+  %=============================================================================
+  %      Bibliography
+  %=============================================================================
+  \renewcommand{\bibsection}{}
+  \chapter*{Bibliography}
+  \addcontentsline{toc}{chapter}{Bibliography}
+  \bibliographystyle{abbrvnat}
+  \bibliography{references_file}
+
+
+\end{document}
