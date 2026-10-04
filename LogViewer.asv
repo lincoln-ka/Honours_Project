@@ -1,17 +1,30 @@
 close all
+clear
+
+%%% openloop control EXAMPLE
+%00000021
+%299.9
+
+
+%closedloop control example
+% 27
+% 299.9
+
 
 %%% import data %%%l
-log_int = ardupilotreader("C:\Users\linky\OneDrive\Documents\Mission Planner\sitl\flightaxis\logs\00000454.BIN");
+log_int = ardupilotreader("C:\Users\linky\OneDrive\Documents\Mission Planner\sitl\plane\logs\00000015.BIN");
 %436 and 300.0 for motor overide
-traj_tf = 10; %total length of traj
+traj_tf = 15; %total length of traj
 log = readMessages(log_int);
 Traj = readmatrix("C:\Users\linky\OneDrive\Documents\Mission Planner\sitl\flightaxis\scripts\Y.csv")';
 Input = readmatrix("C:\Users\linky\OneDrive\Documents\Mission Planner\sitl\flightaxis\scripts\U.csv")';
 loggedOutput = readLoggedOutput(log_int);
 
 %%% generate plots %%%
+Traj=Traj';
+Input=Input';
 traj_t=linspace(0,traj_tf,length(Traj(1,:)));
-searchStr = "start_transition SET at 299.8 m from VTOL_LAND WP";
+searchStr = "start_transition SET at 299.9 m from VTOL_LAND WP";
 idx = find(contains(loggedOutput.Message, searchStr));
 log_t=loggedOutput.timestamp(idx);
 
@@ -30,13 +43,14 @@ dh = tecsData.dh(idxtecs:idxtecsend);
 i=1;
 sp_mag=linspace(0,0,length(Traj));
 while i<length(Traj)
-    sp_mag(i)=(Traj(4)^2+Traj(5)^2)^0.5;
+    sp_mag(i)=(Traj(4,i)^2+Traj(5,i)^2)^0.5;
     i=i+1;
 end
 figure(1)
 hold on
 plot (traj_t,sp_mag)
-plot (linspace(0,10,length(sp')),sp')
+plot (linspace(0,traj_tf,length(sp')),sp')
+
 hold off
 xlabel("Time (s)")
 ylabel("velocity (m/s)")
@@ -59,7 +73,7 @@ alt = ahr2Data.Alt(idxahr2:idxahr2end);
 figure(2)
 hold on
 plot(traj_t,rad2deg(Traj(3,:)))
-plot (linspace(0,10,length(pitch')),pitch')
+plot (linspace(0,traj_tf,length(pitch')),pitch')
 hold off
 xlabel("Time (s)")
 ylabel("Pitch(deg)")
@@ -70,7 +84,7 @@ legend("Trajectory","Log")
 figure(3)
 hold on
 plot(traj_t,(-Traj(2,:)))
-plot (linspace(0,10,length(alt')),alt'-206)
+plot (linspace(0,traj_tf,length(alt')),alt'-206)
 
 hold off
 xlabel("Time (s)")
@@ -82,7 +96,7 @@ legend("Trajectory","Log")
 figure(4)
 hold on
 plot (traj_t,-Traj(5,:))
-plot (linspace(0,10,length(dh')),dh')
+plot (seconds(tecsData.timestamp(idxtecs:idxtecsend)-tecsData.timestamp(idxtecs)),dh')
 hold off
 xlabel("Time (s)")
 ylabel("Climb Rate (m/s)")
@@ -102,7 +116,7 @@ dist = ntunData.Dist(idxntun:idxntunend);               % Current True Airspeed
 figure(5)
 hold on
 plot (traj_t,-Traj(1,:))
-plot (linspace(0,10,length(dist')),dist')
+plot (seconds(ntunData.timestamp(idxntun:idxntunend)-ntunData.timestamp(idxntun)),dist')
 hold off
 xlabel("Time (s)")
 ylabel("Lateral Distance (m)")
@@ -123,7 +137,7 @@ pr = rateData.P(idxrate:idxrateend);               % Current True Airspeed
 figure(6)
 hold on
 plot (traj_t,rad2deg(Traj(6,:)))
-plot (linspace(0,10,length(pr')),pr')
+plot (seconds(rateData.timestamp(idxrate:idxrateend)-rateData.timestamp(idxrate)),rad2deg(pr'))
 hold off
 xlabel("Time (s)")
 ylabel("Pitch Rate (deg/s)")
@@ -141,6 +155,8 @@ motorf1 = rcData.C7(idxrc:idxrcend);
 motorf2 = rcData.C5(idxrc:idxrcend);
 motorr1 = rcData.C6(idxrc:idxrcend);
 motorr2 = rcData.C8(idxrc:idxrcend);
+elv_log = rcData.C1(idxrc:idxrcend);
+tilt=0.5*(rcData.C9(idxrc:idxrcend)+rcData.C10(idxrc:idxrcend));
 
 motorf = (motorf1+motorf2)*0.5;
 motorr = (motorr1+motorr2)*0.5;
@@ -150,67 +166,88 @@ u_cmd_pct_r=[56.299824,5.699823,53.499817,52.099812,1.499804];
 t_pct=linspace(0,5*0.003,5);
 %t_pct=[00:00:53.420417,00:00:53.423978,00:00:53.426013,00:00:53.428047,00:00:53.428047];
 
-ctrl = readMessages(log_int, 'MessageNames', {'CMDL'});
-ctrlData = ctrl.MsgData{1};
-timectrl= ctrlData.TimeUS;
-[~, idxctrl] = min(abs(timectrl - log_t));
-[~, idxctrlend] = min(abs(timectrl - (log_t+seconds(traj_tf))));
-timectrl = timectrl(idxctrl:idxctrlend);% 1e6;  % Convert microseconds to seconds
-r1 = ctrlData.R1(idxctrl:idxctrlend); 
-r2 = ctrlData.R2(idxctrl:idxctrlend); 
-r3 = ctrlData.R3(idxctrl:idxctrlend); 
-r4 = ctrlData.R4(idxctrl:idxctrlend); 
-rf_cmd_avg=(r1+r2)/2;
-rr_cmd_avg=(r3+r4)/2;
+% ctrl = readMessages(log_int, 'MessageNames', {'CMDL'});
+% ctrlData = ctrl.MsgData{1};
+% timectrl= ctrlData.TimeUS;
+% [~, idxctrl] = min(abs(timectrl - log_t));
+% [~, idxctrlend] = min(abs(timectrl - (log_t+seconds(traj_tf))));
+% timectrl = timectrl(idxctrl:idxctrlend);% 1e6;  % Convert microseconds to seconds
+% r1 = ctrlData.R1(idxctrl:idxctrlend); 
+% r2 = ctrlData.R2(idxctrl:idxctrlend); 
+% r3 = ctrlData.R3(idxctrl:idxctrlend); 
+% r4 = ctrlData.R4(idxctrl:idxctrlend); 
+% rf_cmd_avg=(r1+r2)/2;
+% rr_cmd_avg=(r3+r4)/2;
+% 
+% m1 = ctrlData.M1pt(idxctrl:idxctrlend); 
+% m2 = ctrlData.M2pt(idxctrl:idxctrlend); 
+% m3 = ctrlData.M3pt(idxctrl:idxctrlend); 
+% m4 = ctrlData.M4pt(idxctrl:idxctrlend); 
+% mf_cmd_avg=(m1+m2)/2;
+% mf_cmd_avg=mf_cmd_avg*10+1000;
+% mr_cmd_avg=(m3+m4)/2;
+% mr_cmd_avg=mr_cmd_avg*10+1000;
 
-m1 = ctrlData.M1pt(idxctrl:idxctrlend); 
-m2 = ctrlData.M2pt(idxctrl:idxctrlend); 
-m3 = ctrlData.M3pt(idxctrl:idxctrlend); 
-m4 = ctrlData.M4pt(idxctrl:idxctrlend); 
-mf_cmd_avg=(m1+m2)/2;
-mf_cmd_avg=mf_cmd_avg*10+1000;
-mr_cmd_avg=(m3+m4)/2;
-mr_cmd_avg=mr_cmd_avg*10+1000;
+
+desr = readMessages(log_int, 'MessageNames', {'arrs'});
+desrData = desr.MsgData{1};
+timedesr= desrData.TimeUS;
+[~, idxdesr] = min(abs(timedesr- log_t));
+[~, idxdesrend] = min(abs(timedesr - (log_t+seconds(traj_tf))));
+timedesr = timedesr(idxdesr:idxdesrend);
+u_d1=desrData.u1_d(idxdesr:idxdesrend);
+u_d3=desrData.u2_d(idxdesr:idxdesrend); 
+u_cmd1=desrData.u1_cmd(idxdesr:idxdesrend);
+u_cmd3=desrData.u2_cmd(idxdesr:idxdesrend);
+elv_d=desrData.u4_d(idxdesr:idxdesrend);
+elv_cmd=desrData.u4_cmd(idxdesr:idxdesrend);
+tilt_d=desrData.u3_d(idxdesr:idxdesrend);
+tilt_cmd=desrData.u3_cmd(idxdesr:idxdesrend);
+
+% u_d1=desrData.u1(idxctrl:idxctrlend);
+% u_d3=desrData.u2(idxctrl:idxctrlend); 
 
 figure (7)
 hold on
-plot(traj_t,((Traj(7,:))/10)+1000);
-plot(linspace(0,10,length(motorf')),motorf)
-% plot(t_pct,((u_cmd_pct_f*10)+1000))
-plot(linspace(0,10,length(timectrl)),mf_cmd_avg)
+% plot(traj_t,((Input(1,:))/10)+1000);
+plot(seconds(rcData.timestamp(idxrc:idxrcend)-rcData.timestamp(idxrc)),motorf)
+plot(seconds(desrData.timestamp(idxdesr:idxdesrend)-desrData.timestamp(idxdesr)),u_d1/10+1000)
+plot(seconds(desrData.timestamp(idxdesr:idxdesrend)-desrData.timestamp(idxdesr+1)),u_cmd1/10+1000)
 hold off
 xlabel("Time (s)")
 ylabel("Throttle (%)")
 title("Front Motor Average Throttle")
-legend("trajectory","Log","Commanded")
+legend("Log","Desired","Commanded")
 
 figure (8)
 hold on
-plot(traj_t,((Traj(8,:))/10)+1000);
-plot(linspace(0,10,length(motorr')),motorr)
-plot(linspace(0,10,length(timectrl)),mr_cmd_avg)
+% plot(traj_t,((Input(2,:))/10)+1000);
+plot(seconds(rcData.timestamp(idxrc:idxrcend)-rcData.timestamp(idxrc)),motorr)
+plot(seconds(desrData.timestamp(idxdesr:idxdesrend)-desrData.timestamp(idxdesr)),u_d3/10+1000)
+plot(seconds(desrData.timestamp(idxdesr:idxdesrend)-desrData.timestamp(idxdesr)),u_cmd3/10+1000)
 hold off
 xlabel("Time (s)")
 ylabel("Throttle (%)")
 title("Rear Motor Average Throttle")
-legend("trajectory","Log","Commanded")
+legend("Log","Desired","Commanded")
 
 figure (9)
-plot(traj_t,Input(1,:))
 hold on
-plot(linspace(0,10,length(timectrl)),rf_cmd_avg)
+plot(traj_t,rad2deg(Input(4,:)));
+plot(seconds(rcData.timestamp(idxrc:idxrcend)-rcData.timestamp(idxrc)),rad2deg((0.045*(elv_log-1500))))
+plot(seconds(desrData.timestamp(idxdesr:idxdesrend)-desrData.timestamp(idxdesr)),rad2deg(elv_d))
+plot(seconds(desrData.timestamp(idxdesr:idxdesrend)-desrData.timestamp(idxdesr)),rad2deg(elv_cmd))
 hold off
 xlabel("Time (s)")
-ylabel("Rotor Rate (rpm/s)")
-title("Front Rotor Rate")
-legend("Trajectory","Commanded")
+ylabel("Elevator (deg)")
+title("Elevator")
+legend("Trajectory","Log","Desired","Commanded")
 
 figure (10)
-plot(traj_t,Input(2,:))
-hold on
-plot(linspace(0,10,length(timectrl)),rr_cmd_avg)
+hold on 
+plot(traj_t,rad2deg(Input(3,:)))
+plot(seconds(rcData.timestamp(idxrc:idxrcend)-rcData.timestamp(idxrc)),(90/1000)*(tilt-1000))
+plot(seconds(desrData.timestamp(idxdesr:idxdesrend)-desrData.timestamp(idxdesr)),rad2deg(tilt_d))
+plot(seconds(desrData.timestamp(idxdesr:idxdesrend)-desrData.timestamp(idxdesr)),rad2deg(tilt_cmd))
 hold off
 xlabel("Time (s)")
-ylabel("Rotor Rate (rpm/s)")
-title("Rear Rotor Rate")
-legend("Trajectory","Commanded")

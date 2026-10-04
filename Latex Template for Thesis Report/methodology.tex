@@ -6,11 +6,31 @@ tools you've learned throughout your degree in ANU to generate your results ---
 this may also include the systems engineering approach.
 
 \section{Modelling}
-\subsection{wings}
+\subsection{Aerodynamic Surfaces}
+\subsection{Rotor Forces}
+\subsection{Dynamics}
 
 \section{Trajectory Optimisation}
+The matlab library OptimTrajectory **intext** was used to solve the optimisation problem for the transition trajectory. OptimTrajectory utilises matlab's fmincon solver.
+
 \subsection{Model Setup}
+The aircraft model discussed above was arraged into a statespace representation. 
+\[
+Y=\begin{bmatrix} x&z&\theta&\dot{x}&\dot{z}&\dot{\theta}\end{bmatrix}^T,
+U=\begin{bmatrix} \omega_{f}&\omega_{r}&\epsilon&\delta_{e}\end{bmatrix}^T
+\]
 \subsection{Constraints}
+The constraints for the trajectory optimisation were as follows.
+\[
+Y_{initial}=\begin{bmatrix}-400 &-50&0**&0&0&0\end{bmatrix}^T
+\]
+\[
+Y_{final}=\begin{bmatrix}0 &-10&0&0&0&0\end{bmatrix}^T
+\]
+\[
+Y_{upper}=\begin{bmatrix} 0&-10&\pi/2&30&\infty&\infty\end{bmatrix}^T
+\]
+
 \subsection{Initialisation}
 \subsection{Mesh Refinment}
 \subsection{Solution}
@@ -28,5 +48,6 @@ this may also include the systems engineering approach.
 \subsection{Safety Features}
 \subsection{Altitude Floor}
 \subsection{State Error Disconnect}
+state error explaination goes here
 
 \section{}
