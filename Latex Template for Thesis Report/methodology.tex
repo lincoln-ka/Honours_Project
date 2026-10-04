@@ -25,8 +25,9 @@ this may also include the systems engineering approach.
 \section{Simulation Enviroment}
 \subsection{Rotor Model}
 
-\subsection{Safety Features}
+\section{Safety Features}
 \subsection{Altitude Floor}
+The Altitude floor is a minimum altitude that if exceeded with cease the control input overides, returning controll to the stock Ardupilot controller. Fig X *FIGURE OUT FIGURE AND NAMING IN LATEX* show that the stock controllers do not wind up and the aircraft stably returns to the stock trajectory.
 \subsection{State Error Disconnect}
+another method for rejecting the landing sequence is if the norm of the state error surpasses a preset limit. This triggers in two cases, the first is the aircraft failing to track the trajectory ref figure X, the second being a mismatch in the inital condition for example if the trajectory had not been updated and was made for a different altitude approach.
 
-\section{}
