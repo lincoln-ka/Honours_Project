@@ -1,39 +1,185 @@
 \chapter{Results and Analysis}
 \vspace{-1.4em}
-
+\begin{comment}
 When presenting your results, it is important that you organise them in an orderly manner to avoid clusters of information. Be critical and properly analyse what the results mean. Provide insightful discussion and explanation. Consider using other published articles to support or argue your results. Make sure it clear which work are yours and which are background materials. Also, include the implication of your results.
+\end{comment}
 
-\section{Experimental Results}
+With the application of model based optimal control the energy consumption of a Arace Griffin Pro UAV during landing approach has been reduced by $61\%$, This can improve efficiency, payload and range, without the need for any new hardware. This approach could be broadened to apply to all powered lift aircraft running ArduPilot.
 
-\section{Subheading 1} 
-How to reference Figure ~\ref{table:example}.
+Figure 4.1 shows that the primary reduction in energy consumption comes from the lack time spent in the hover phase (xs to ys) as the Lua controller only hovers down 10m instead of the stock 50m, with the hover portion of the approach able to be reduced even further by changing the optimisation constraints in section 3.2.2 to achieve even higher efficiency, if the operator is comfortable with the increased risk.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/landing_energy}
+  \caption{Landing Approach Energy Consumption}
+  \label{fig:Landing Approach Energy Consumption}
+\end{figure}
 
-\begin{table}[ht]
-    \begin{center} 
-        \caption{Table captions are above tables. Tables are to be centered on the page.} 
-        \begin{tabular}{ccc} 
-            \toprule 
-            No & Student & Task \\ 
-            \midrule 
-            1 & A & X \\ 
-            2 & B & Y \\ 
-            3 & C & Z \\ 
-            \bottomrule 
-        \end{tabular} 
-        \label{table:example} 
-    \end{center} 
-\end{table}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/landing_power}
+  \caption{Landing Approach Power}
+  \label{fig:Landing Approach Power}
+\end{figure}
 
-\section{Analysis and Discussion}
+\FloatBarrier
 
-\section{Subheading 2}
+The controller prioritises tracking the positions over the rates as seen in figures 4.3 through 4.10. on the basis of a small error in climb rate is less important than a error in altitude when diving towards the ground as seen in first 8s of the landing approach.
 
-\subsection{How to do math equations}
-% \( and \) tell latex to do an inline equation. \[ and \] creates a new, separate line for the equation. equation and math environments create a dedicated space for maths equations, with equation numbers that can be referenced.
-The well known Pythagorean theorem \(x^2 + y^2 = z^2\) was proved to be invalid for other exponents. Meaning equation \ref{pythag_fail} has no integer solutions:  
-\[x^n + y^n = z^n\]
+Further improvement could be made to the lateral control by incorporating the rudder and aileron into the script controller, this would also have the added benefit of relaxing the constraints on the waypoints in ArduPilot, as the current solution requires a waypoint that lies on the line drawn between the VTOL Landing and the previous waypoint to be the trajectory $x[0]-waypoint_{radius}$  from the landing waypoint. if it lies off the line the ArduPilot driven control surfaces, primarily the ailerons will drive the aircraft off track.
 
-\begin{equation}
-    x^n + y^n = z^n
-    \label{pythag_fail}
-\end{equation}
+The other benefit of incorporating the full lateral dynamics would be that the lateral control could be achieved through the LQR which would provide a more optimal solution to the disturbance rejection control. Additionally if the lateral dynamics were integrated this controller would capable of driving any arbitrary trajectory, widening the possible applications.
+
+
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/x}
+    \caption{$x$}
+    \label{fig:x}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/x_dot}
+    \caption{$\dot{x}$}
+    \label{fig:xdot}
+  \end{subfigure}
+  \caption{Simulation $x$ and $\dot{x}$}
+  \label{fig:x_pair}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/z}
+    \caption{$z$}
+    \label{fig:z}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/z_dot}
+    \caption{$\dot{z}$}
+    \label{fig:zdot}
+  \end{subfigure}
+  \caption{Simulation $z$ and $\dot{z}$}
+  \label{fig:z_pair}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/theta}
+    \caption{$\theta$}
+    \label{fig:theta}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/theta_dot}
+    \caption{$\dot{\theta}$}
+    \label{fig:thetadot}
+  \end{subfigure}
+  \caption{Simulation $\theta$ and $\dot{\theta}$}
+  \label{fig:theta_pair}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/y}
+    \caption{$y$}
+    \label{fig:y}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/y_dot}
+    \caption{$\dot{y}$}
+    \label{fig:ydot}
+  \end{subfigure}
+  \caption{Simulation $y$ and $\dot{y}$}
+  \label{fig:y_pair}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/phi}
+    \caption{$\phi$}
+    \label{fig:phi}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/phi_dot}
+    \caption{$\dot{\phi}$}
+    \label{fig:phidot}
+  \end{subfigure}
+  \caption{Simulation $\phi$ and $\dot{\phi}$}
+  \label{fig:phi_pair}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/psi}
+    \caption{$\psi$}
+    \label{fig:psi}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/psi_dot}
+    \caption{$\dot{\psi}$}
+    \label{fig:psidot}
+  \end{subfigure}
+  \caption{Simulation $\psi$ and $\dot{\psi}$}
+  \label{fig:psi_pair}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/rpms}
+  \caption{Simulation $\omega$}
+  \label{fig:omega}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/epsilon}
+    \caption{$\epsilon$}
+    \label{fig:epsilon}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/xi}
+    \caption{$\xi$}
+    \label{fig:xi}
+  \end{subfigure}
+  \caption{Simulation $\epsilon$ and $\xi$}
+  \label{fig:epsilon_xi_pair}
+\end{figure}
+\FloatBarrier
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/landing_energys}
+  \caption{Landing Approach Energy States}
+  \label{fig:Landing Approach Energy States}
+\end{figure}
+
+
+The approach trajectory has two objectives of bleeding off the kinetic and potential energy of the aircraft. The solution immediately converts the potential energy to kinetic through the dive in the first 8s of the approach, followed by a pull up into a stall, that hits the pitch rate constraint causing the gain in height, however this stall also dissipates the vast majority of the kinetic energy, which remains largely constant in final stage of the approach (12s-30.5s) as the aircraft holds the upper angle of attack constraint ($20\deg$) and therefore a stall stabilised with the quad rotors to slowly approach the hover for handover.
+
+

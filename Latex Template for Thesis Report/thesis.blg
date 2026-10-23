@@ -1,4 +1,4 @@
-This is BibTeX, Version 0.99d
+This is BibTeX, Version 0.99e
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: thesis.aux
 Reallocating 'name_of_file' (item size: 1) to 24 items.
@@ -27,44 +27,53 @@ Reallocating 'name_of_file' (item size: 1) to 9 items.
 The style file: abbrvnat.bst
 Reallocating 'name_of_file' (item size: 1) to 16 items.
 Database file #1: references_file.bib
-You've used 1 entry,
+Warning--entry type for "miller2025thesis" isn't style-file defined
+--line 21 of file references_file.bib
+Warning--entry type for "kelly2022optimtraj" isn't style-file defined
+--line 112 of file references_file.bib
+Warning--empty year in ardupilot_lua
+Warning--empty year in ardupilot_quadplane
+Warning--empty year in ardupilot_sitl
+Warning--empty year in cantrell_settling
+You've used 28 entries,
             2773 wiz_defined-function locations,
-            610 strings with 4918 characters,
-and the built_in function-call counts, 476 in all, are:
-= -- 37
-> -- 30
-< -- 0
-+ -- 10
-- -- 9
-* -- 41
-:= -- 81
-add.period$ -- 3
-call.type$ -- 1
-change.case$ -- 6
-chr.to.int$ -- 1
-cite$ -- 2
-duplicate$ -- 21
-empty$ -- 36
-format.name$ -- 10
-if$ -- 92
-int.to.chr$ -- 1
+            767 strings with 9065 characters,
+and the built_in function-call counts, 12016 in all, are:
+= -- 1067
+> -- 633
+< -- 21
++ -- 219
+- -- 189
+* -- 929
+:= -- 1844
+add.period$ -- 91
+call.type$ -- 28
+change.case$ -- 144
+chr.to.int$ -- 26
+cite$ -- 60
+duplicate$ -- 555
+empty$ -- 1048
+format.name$ -- 239
+if$ -- 2519
+int.to.chr$ -- 3
 int.to.str$ -- 1
-missing$ -- 1
-newline$ -- 13
-num.names$ -- 4
-pop$ -- 10
+missing$ -- 26
+newline$ -- 155
+num.names$ -- 112
+pop$ -- 317
 preamble$ -- 1
-purify$ -- 5
+purify$ -- 119
 quote$ -- 0
-skip$ -- 16
+skip$ -- 416
 stack$ -- 0
-substring$ -- 8
-swap$ -- 1
-text.length$ -- 0
+substring$ -- 430
+swap$ -- 44
+text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 11
-warning$ -- 0
-while$ -- 4
+type$ -- 288
+warning$ -- 4
+while$ -- 113
 width$ -- 0
-write$ -- 20
+write$ -- 374
+(There were 6 warnings)

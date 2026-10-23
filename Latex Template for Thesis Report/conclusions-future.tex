@@ -1,4 +1,24 @@
 \chapter{Conclusions and Future Development}
 \vspace{-1.4em}
 
+\begin{comment}
 Provide an answer to your research question or evaluation of overall results given. Discuss what worked well and did not work well in your research. Outline the limitations of approach, methodology, data or research. Give suggestions/recommendations for future work.  
+\end{comment}
+
+\section{Conclusion}
+The project so far has been a success in reducing the energy consumption of the aircraft during the landing transition achieving a $61\%$ reduction, with the added benefit of a substantial time reduction, however as the results are only simulations real world testing is required to fully validate these results.
+
+\section{Future Development}
+The work put forward in this project while promising is not complete, and there are several areas of future work on this topic worth pursuing.
+
+\subsection{Validation}
+This project has only presented results from simulation. Real world flight testing is required to validate the control with the extra latency associated with the microcontroller, any model mismatch between the dynamical model presented in section 3.1 and real environmental disturbances such as wind, which have been simulated (refer to appendix XXX for hover gust response simulations.).
+
+\subsection{Model Expansion}
+While the initial decision was taken to limit the dynamical model to the longitudinal frame to reduce complexity, it now seems prudent to incorporate the lateral dynamics, as it would allow the lateral stabilisation to be incorporated into the LQR controller rather than the current PD solution, as well as allowing for three dimensional approaches, which would mitigate one of the limitations of the current trajectories requiring a long clear lane to approach the landing point.
+
+\subsection{Airframe types}
+This project in its current state exclusively supports tilt rotor powered lift UAVs, however, the same approach could be applied to tail sitters, tilt wings and quadplanes without excessive effort, allowing all powered lift aircraft to reap the benefits of this work.
+
+\subsection{System Identification}
+A dynamical model is required for both the trajectory optimisation and LQR control as shown in section 3, however to build this model a large number of parameters of the aircraft are required with the most difficult to measure being the moments of inertia around the center of gravity. As such a system identification protocol would be a valuable addition to this work to provide users an estimate of these values especially if the model was extended to three dimensions.

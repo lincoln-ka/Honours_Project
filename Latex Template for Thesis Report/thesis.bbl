@@ -1,0 +1,183 @@
+\begin{thebibliography}{28}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Allenspach and Ducard(2021)]{allenspach2021nmpc}
+M.~Allenspach and G.~J.~J. Ducard.
+\newblock Nonlinear model predictive control and guidance for a
+  propeller-tilting hybrid unmanned air vehicle.
+\newblock \emph{Automatica}, 132:\penalty0 109790, 2021.
+
+\bibitem[Anderson and Moore(1990)]{anderson1990optimal}
+B.~D.~O. Anderson and J.~B. Moore.
+\newblock \emph{Optimal Control: Linear Quadratic Methods}.
+\newblock Prentice Hall, 1990.
+
+\bibitem[{ArduPilot Dev Team}({\natexlab{a}})]{ardupilot_lua}
+{ArduPilot Dev Team}.
+\newblock Lua scripts.
+\newblock \url{https://ardupilot.org/plane/docs/common-lua-scripts.html},
+  {\natexlab{a}}.
+\newblock Accessed: 2026-10-12.
+
+\bibitem[{ArduPilot Dev Team}({\natexlab{b}})]{ardupilot_quadplane}
+{ArduPilot Dev Team}.
+\newblock Quadplane overview.
+\newblock \url{https://ardupilot.org/plane/docs/quadplane-overview.html},
+  {\natexlab{b}}.
+\newblock Accessed: 2026-10-12.
+
+\bibitem[{ArduPilot Dev Team}({\natexlab{c}})]{ardupilot_sitl}
+{ArduPilot Dev Team}.
+\newblock {SITL} simulator (software in the loop).
+\newblock
+  \url{https://ardupilot.org/dev/docs/sitl-simulator-software-in-the-loop.html},
+  {\natexlab{c}}.
+\newblock Accessed: 2026-10-12.
+
+\bibitem[Bangura and Mahony(2017)]{bangura2017thrust}
+M.~Bangura and R.~Mahony.
+\newblock Thrust control for multirotor aerial vehicles.
+\newblock \emph{IEEE Transactions on Robotics}, 33\penalty0 (2):\penalty0
+  390--405, 2017.
+
+\bibitem[Betts(1998)]{betts1998survey}
+J.~T. Betts.
+\newblock Survey of numerical methods for trajectory optimization.
+\newblock \emph{Journal of Guidance, Control, and Dynamics}, 21\penalty0
+  (2):\penalty0 193--207, 1998.
+
+\bibitem[Bryson and Ho(1975)]{bryson1975applied}
+A.~E. Bryson and Y.-C. Ho.
+\newblock \emph{Applied Optimal Control: Optimization, Estimation and Control}.
+\newblock Hemisphere, 1975.
+
+\bibitem[Cantrell()]{cantrell_settling}
+P.~Cantrell.
+\newblock Settling with power.
+\newblock \url{https://www.copters.com/aero/settling.html}.
+\newblock Helicopter Aviation. Accessed: 2026-10-23.
+
+\bibitem[Cory and Tedrake(2008)]{cory2008experiments}
+R.~Cory and R.~Tedrake.
+\newblock Experiments in fixed-wing {UAV} perching.
+\newblock In \emph{AIAA Guidance, Navigation and Control Conference and
+  Exhibit}, 2008.
+
+\bibitem[Deng et~al.(2025)Deng, Yang, Zhu, Liao, Yuan, and
+  Wang]{deng2025pigeon}
+J.~Deng, Y.~Yang, J.~Zhu, W.~Liao, X.~Yuan, and X.~Wang.
+\newblock Pigeon-inspired transition trajectory optimization for tilt-rotor
+  {UAVs}.
+\newblock \emph{Drones}, 9\penalty0 (6):\penalty0 432, 2025.
+\newblock \doi{10.3390/drones9060432}.
+
+\bibitem[Ducard and Allenspach(2021)]{ducard2021review}
+G.~J.~J. Ducard and M.~Allenspach.
+\newblock Review of designs and flight control techniques of hybrid and
+  convertible {VTOL} {UAVs}.
+\newblock \emph{Aerospace Science and Technology}, 118:\penalty0 107035, 2021.
+
+\bibitem[Faessler et~al.(2018)Faessler, Franchi, and
+  Scaramuzza]{faessler2018differential}
+M.~Faessler, A.~Franchi, and D.~Scaramuzza.
+\newblock Differential flatness of quadrotor dynamics subject to rotor drag for
+  accurate tracking of high-speed trajectories.
+\newblock \emph{IEEE Robotics and Automation Letters}, 3\penalty0 (2):\penalty0
+  620--626, 2018.
+
+\bibitem[Fu et~al.(2023)Fu, Zhao, and Liu]{fu2023saferl}
+Y.~Fu, W.~Zhao, and L.~Liu.
+\newblock Safe reinforcement learning for transition control of ducted-fan
+  {UAVs}.
+\newblock \emph{Drones}, 7\penalty0 (5):\penalty0 332, 2023.
+\newblock \doi{10.3390/drones7050332}.
+
+\bibitem[Hargraves and Paris(1987)]{hargraves1987direct}
+C.~R. Hargraves and S.~W. Paris.
+\newblock Direct trajectory optimization using nonlinear programming and
+  collocation.
+\newblock \emph{Journal of Guidance, Control, and Dynamics}, 10\penalty0
+  (4):\penalty0 338--342, 1987.
+
+\bibitem[Kelly(2017)]{kelly2017introduction}
+M.~Kelly.
+\newblock An introduction to trajectory optimization: How to do your own direct
+  collocation.
+\newblock \emph{SIAM Review}, 59\penalty0 (4):\penalty0 849--904, 2017.
+\newblock \doi{10.1137/16M1062569}.
+
+\bibitem[Kelly(2022)]{kelly2022optimtraj}
+M.~P. Kelly.
+\newblock {OptimTraj}: Trajectory optimization for {MATLAB}, 2022.
+\newblock URL \url{https://github.com/MatthewPeterKelly/OptimTraj}.
+
+\bibitem[Klein and Morelli(2006)]{klein2006aircraft}
+V.~Klein and E.~A. Morelli.
+\newblock \emph{Aircraft System Identification: Theory and Practice}.
+\newblock AIAA, 2006.
+
+\bibitem[Leishman(2006)]{leishman2006principles}
+J.~G. Leishman.
+\newblock \emph{Principles of Helicopter Aerodynamics}.
+\newblock Cambridge University Press, 2nd edition, 2006.
+
+\bibitem[Mahony et~al.(2012)Mahony, Kumar, and Corke]{mahony2012multirotor}
+R.~Mahony, V.~Kumar, and P.~Corke.
+\newblock Multirotor aerial vehicles: Modeling, estimation, and control of
+  quadrotor.
+\newblock \emph{IEEE Robotics \& Automation Magazine}, 19\penalty0
+  (3):\penalty0 20--32, 2012.
+
+\bibitem[Martin and Sala{\"u}n(2010)]{martin2010true}
+P.~Martin and E.~Sala{\"u}n.
+\newblock The true role of accelerometer feedback in quadrotor control.
+\newblock In \emph{IEEE International Conference on Robotics and Automation
+  (ICRA)}, pages 1623--1629, 2010.
+
+\bibitem[Miller(2025)]{miller2025thesis}
+F.~Miller.
+\newblock Todo: thesis title, 2025.
+
+\bibitem[Moore et~al.(2014)Moore, Cory, and Tedrake]{moore2014robust}
+J.~Moore, R.~Cory, and R.~Tedrake.
+\newblock Robust post-stall perching with a simple fixed-wing glider using
+  {LQR-Trees}.
+\newblock \emph{Bioinspiration \& Biomimetics}, 9\penalty0 (2):\penalty0
+  025013, 2014.
+
+\bibitem[Naldi and Marconi(2011)]{naldi2011optimal}
+R.~Naldi and L.~Marconi.
+\newblock Optimal transition maneuvers for a class of {V/STOL} aircraft.
+\newblock \emph{Automatica}, 47\penalty0 (5):\penalty0 870--879, 2011.
+
+\bibitem[Rugh and Shamma(2000)]{rugh2000research}
+W.~J. Rugh and J.~S. Shamma.
+\newblock Research on gain scheduling.
+\newblock \emph{Automatica}, 36\penalty0 (10):\penalty0 1401--1425, 2000.
+
+\bibitem[Saeed et~al.(2018)Saeed, Younes, Cai, and Cai]{saeed2018survey}
+A.~S. Saeed, A.~B. Younes, C.~Cai, and G.~Cai.
+\newblock A survey of hybrid unmanned aerial vehicles.
+\newblock \emph{Progress in Aerospace Sciences}, 98:\penalty0 91--105, 2018.
+
+\bibitem[Tedrake et~al.(2010)Tedrake, Manchester, Tobenkin, and
+  Roberts]{tedrake2010lqrtrees}
+R.~Tedrake, I.~R. Manchester, M.~Tobenkin, and J.~W. Roberts.
+\newblock {LQR}-trees: Feedback motion planning via sums-of-squares
+  verification.
+\newblock \emph{The International Journal of Robotics Research}, 29\penalty0
+  (8):\penalty0 1038--1052, 2010.
+
+\bibitem[Zhao et~al.(2023)Zhao, Wang, Shen, Zhang, Li, and
+  Gao]{zhao2023multimode}
+H.~Zhao, B.~Wang, Y.~Shen, Y.~Zhang, N.~Li, and Z.~Gao.
+\newblock Development of multimode flight transition strategy for tilt-rotor
+  {VTOL} {UAVs}.
+\newblock \emph{Drones}, 7\penalty0 (9):\penalty0 580, 2023.
+\newblock \doi{10.3390/drones7090580}.
+
+\end{thebibliography}

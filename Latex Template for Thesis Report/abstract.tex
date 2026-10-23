@@ -2,4 +2,9 @@
 \addcontentsline{toc}{chapter}{Abstract}
 
 \vspace*{2em}
+\begin{comment}
 The abstract should be brief (100--150 words) and directed to readers familiar with the broad area of the thesis subject. ``The abstract is of utmost importance for it is read by 10 to 500 times more people than hear or read the entire article. It should not be a mere recital of the subjects covered, replete with such expressions as ``is discussed'' and ``is described.'' It should be a condensation and concentration of the essential qualities of the paper.''
+\end{comment}
+
+
+This project puts forward an implementation of optimal control in ArduPilot to reduce the energy consumption of tilt rotor Unmanned Aerial Vehicles (UAVs) during landing by $61\%$ compared to the current ArduPilot approach, with no hardware changes required. This is achieved through the use of a time varying linear quadratic regulator control approach and a precomputed optimised trajectory. The goal of this project is to eventually expand this work to all powered lift aircraft currently running ArduPilot. The other contribution of this work is the introduction of momentum theory drag into the ArduPilot simulation environment software in the loop (SITL), allowing users to simulate new manoeuvres utilising these effects or have more accurate simulation and flight planning.

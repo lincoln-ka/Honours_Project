@@ -1,30 +1,46 @@
 \babel@toc {australian}{}\relax 
 \contentsline {chapter}{Acknowledgements}{i}{chapter*.1}%
 \contentsline {chapter}{Abstract}{ii}{chapter*.2}%
-\contentsline {chapter}{List of Figures}{iv}{chapter*.4}%
-\contentsline {chapter}{List of Tables}{v}{chapter*.5}%
-\contentsline {chapter}{List of Tables}{v}{chapter*.5}%
-\contentsline {chapter}{Nomenclature}{vi}{chapter*.6}%
+\contentsline {chapter}{List of Figures}{v}{chapter*.4}%
+\contentsline {chapter}{List of Tables}{vi}{chapter*.5}%
+\contentsline {chapter}{List of Tables}{vi}{chapter*.5}%
+\contentsline {chapter}{Nomenclature}{vii}{chapter*.6}%
 \contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
 \contentsline {chapter}{\numberline {2}Literature Review}{2}{chapter.2}%
-\contentsline {chapter}{\numberline {3}Methodology}{3}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Modelling}{3}{section.3.1}%
-\contentsline {subsection}{\numberline {3.1.1}wings}{3}{subsection.3.1.1}%
-\contentsline {section}{\numberline {3.2}Trajectory Optimisation}{3}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Model Setup}{3}{subsection.3.2.1}%
-\contentsline {subsection}{\numberline {3.2.2}Constraints}{3}{subsection.3.2.2}%
-\contentsline {subsection}{\numberline {3.2.3}Initialisation}{3}{subsection.3.2.3}%
-\contentsline {subsection}{\numberline {3.2.4}Mesh Refinment}{3}{subsection.3.2.4}%
-\contentsline {subsection}{\numberline {3.2.5}Solution}{3}{subsection.3.2.5}%
-\contentsline {section}{\numberline {3.3}Control}{3}{section.3.3}%
-\contentsline {section}{\numberline {3.4}}{3}{section.3.4}%
-\contentsline {chapter}{\numberline {4}Results and Analysis}{4}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Experimental Results}{4}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Subheading 1}{4}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Analysis and Discussion}{4}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Subheading 2}{4}{section.4.4}%
-\contentsline {subsection}{\numberline {4.4.1}How to do math equations}{4}{subsection.4.4.1}%
-\contentsline {chapter}{\numberline {5}Conclusions and Future Development}{5}{chapter.5}%
-\contentsline {chapter}{\numberline {A}Apprendix A: The First}{6}{appendix.A}%
-\contentsline {chapter}{\numberline {B}Appendix B: The Second}{7}{appendix.B}%
-\contentsline {chapter}{Bibliography}{8}{appendix*.9}%
+\contentsline {section}{\numberline {2.1}Powered Lift Aircraft and the Back-Transition}{2}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Transition Control}{3}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Trajectory Optimisation}{4}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Post-Stall Manoeuvring and Perching}{4}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Trajectory Tracking with Time-Varying LQR}{5}{section.2.5}%
+\contentsline {section}{\numberline {2.6}Rotor Aerodynamics in Non-Axial Flow}{5}{section.2.6}%
+\contentsline {section}{\numberline {2.7}Implementation on Open-Source Autopilots}{6}{section.2.7}%
+\contentsline {section}{\numberline {2.8}Summary and Research Gap}{6}{section.2.8}%
+\contentsline {chapter}{\numberline {3}Methodology}{7}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Aircraft Modelling}{7}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Trajectory Optimisation}{7}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Model Setup}{7}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Constraints}{7}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Initialisation}{8}{subsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.2.4}Mesh Refinement}{8}{subsection.3.2.4}%
+\contentsline {subsection}{\numberline {3.2.5}Cost Function}{8}{subsection.3.2.5}%
+\contentsline {subsection}{\numberline {3.2.6}Solution}{8}{subsection.3.2.6}%
+\contentsline {section}{\numberline {3.3}Control}{9}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}LQR}{9}{subsection.3.3.1}%
+\contentsline {subsubsection}{\numberline {3.3.1.1}LQR Gains}{10}{subsubsection.3.3.1.1}%
+\contentsline {subsection}{\numberline {3.3.2}Lateral Stabilisation}{10}{subsection.3.3.2}%
+\contentsline {section}{\numberline {3.4}Simulation Enviroment}{12}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Rotor Model}{12}{subsection.3.4.1}%
+\contentsline {section}{\numberline {3.5}Safety Features}{13}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}Altitude Floor}{13}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}State Error Disconnect}{13}{subsection.3.5.2}%
+\contentsline {chapter}{\numberline {4}Results and Analysis}{14}{chapter.4}%
+\contentsline {chapter}{\numberline {5}Conclusions and Future Development}{19}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Conclusion}{19}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Future Development}{19}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Validation}{19}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}Model Expansion}{19}{subsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.2.3}Airframe types}{19}{subsection.5.2.3}%
+\contentsline {subsection}{\numberline {5.2.4}System Identification}{19}{subsection.5.2.4}%
+\contentsline {chapter}{\numberline {A}Appendix A: The First}{21}{appendix.A}%
+\contentsline {chapter}{\numberline {B}Appendix B: The Second}{22}{appendix.B}%
+\contentsline {chapter}{Bibliography}{23}{appendix*.30}%
