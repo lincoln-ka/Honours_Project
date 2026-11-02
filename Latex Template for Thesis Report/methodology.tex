@@ -6,9 +6,171 @@ tools you've learned throughout your degree in ANU to generate your results ---
 this may also include the systems engineering approach.
 \end{comment}
 
-\section{Aircraft Modelling}
+\section{Aircraft Dynamical Model}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/model}
+  \caption{Dynamical Model Diagram}
+  \label{fig:model_diagram}
+\end{figure}
 
+\begin{comment}
 The model used in this project is the same as that presented in Fraser Miller's Thesis, However some errors have been remedied and the aerodynamic coefficients have been re estimated to match real world flight logs of the Griffin Pro more closely. The new set of coefficients can be found in appendix X.
+\end{comment}
+
+The Model used in this project is based of that presented in Miller's thesis \cite{miller2025thesis}. As such the modeonly captures the longitundinal dynamics of the aircraft, this simplification was made as all of the behaviours being optimised are only present in the longitundinal case, while the lateral is being stabilised to trim level flight. 
+The simplification to a two dimentional model means that the state space $X$ can be simlified from $\mathbb{R}^{12}$ to $\mathbb{R}^{6}$, the input space($U$) can also be simplified resulting in the spaces shown in \eqref{eq:state_input}
+
+\begin{equation}
+X=\begin{bmatrix} x&z&\theta&\dot{x}&\dot{z}&\dot{\theta}\end{bmatrix}^T, \qquad
+U=\begin{bmatrix} \omega_{f}&\omega_{r}&\xi&\epsilon\end{bmatrix}^T
+\label{eq:state_input}
+\end{equation}
+
+where
+\begin{table}[ht]
+  \centering
+
+  \label{tab:basic_table}
+  \begin{tabular}{|l|c|l|c|}
+    \hline
+    State &   & Input&   \\
+    \hline
+    $x$ & $e_{1}$ position (m)& $\omega_{f}$ & front rotor speed (rpm)\\
+    $z$ & $e_{2}$ position (m)& $\omega_{r}$ & rear rotor speed (rpm)\\
+    $\theta$ & pitch (rad)& $\xi$& front rotor tilt (rad)\\
+    $\dot{x}$ & $e_{1}$ velocity (m/s)&$\epsilon$& elevator deflection (rad)\\
+    $\dot{z}$ & $e_{2}$ velocity (m/s)&  & \\
+    $\dot{\theta}$ & pitch rate (rad/s)& & \\
+    \hline
+  \end{tabular}
+  \caption{Model States and Inputs}
+\end{table}
+\FloatBarrier
+
+
+The dynamics of the system are shown in \eqref{eq:pos_dynamics} \& \eqref{eq:rot_dynamics}, which are an application of Newton's second law of motion rearranged.
+
+\begin{equation}
+\begin{bmatrix} \ddot{x}\\\ddot{z} \end{bmatrix}=\frac{1}{m}(R(\theta-\alpha)(F_{w}+F_{e})) + R(\theta+\xi)F_{fr}+R(\theta)F_{rr}+mg)
+\label{eq:pos_dynamics}
+\end{equation}
+\begin{equation}
+\ddot{\theta}=\frac{1}{J_{yy}}(    l_{w}R(-\alpha)  + F_{w_{\perp}}  + (lcos(\epsilon)+l_{e})R(-\alpha)F_{e_{\perp}}  - l_{r}R(\theta+\xi)F_{fr_{\perp}}  + l_{r}R(\theta)F_{rr_{\perp}}   )
+\label{eq:rot_dynamics}
+\end{equation}
+
+where $R(\theta)$ is the standard two dimentaional rotation matrix.
+\begin{comment} = \begin{bmatrix} cos(\theta) &-sin(\theta) \\sin(\theta) &cos(\theta) \end{bmatrix}$
+\end{comment}
+
+\subsection{Aerodynamic Surface Forces}
+The aerodynamic surface (wing \& elevator) forces are modelled using a blended coefficents model to describe post-stall behaviour, as the standard approach of a linear model would mislead the trajectory optimisation when the aircraft would be in stall. The blended model approach utilises the standard linear airfoil coeffcient at angles of attack less than stall and smoothly transitions to a flat-plate model post-stall via a sigmoid function. 
+\begin{equation}
+L_{x}=\frac{1}{2} s_{x} \rho |v_{x}^{2}| C_{l_{x}}(\alpha_{x}), \quad D_{x}=\frac{1}{2} s_{x} \rho |v_{x}^{2}| C_{d_{x}}(\alpha_{x})
+\label{eq:lift_drag}
+\end{equation}
+In the following set of equations (\eqref{eq:lift_drag}- \eqref{eq:simga}) $x$ represents a specfic aerodynamic surface of the aircraft. The total coeffcients \eqref{eq:coef} show how this blending occours.
+\begin{equation}
+\begin{split}
+C_{l_{x}}(\alpha_{x}) = (1-\sigma_x)C_{l_{x_{airfroil}}}(\alpha_{x}) + \sigma_x C_{l_{{flatplate}}}(\alpha_{x}) \\
+C_{d_{x}}(\alpha_{x}) = (1-\sigma_x)C_{d_{x_{airfroil}}}(\alpha_{x}) + \sigma_x C_{d_{{flatplate}}}(\alpha_{x})
+\end{split}
+\label{eq:coef}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+C_{l_{x_{airfroil}}}(\alpha_{x})  = C_{l0_{x}} + C_{l\alpha_{x}}(\alpha_{x}), \quad C_{d_{x_{airfroil}}}(\alpha_{x})  = C_{d0} + C_{d\alpha_{x}}(\alpha_{x}^{2}), \\
+\end{split}
+\label{eq:coef2}
+\end{equation}
+\begin{equation}
+C_{l_{{flatplate}}}(\alpha)  =2sin(\alpha)cos(\alpha), \quad C_{d_{{flatplate}}}(\alpha)  = 2sin^{2}(\alpha)
+\label{eq:fp}
+\end{equation}
+This model for the elevator accounts for the variation in force due to the elevator deflection by applying a modifier to the elevator angle of attack proportional to the deflection. The value of this proportional gain ($\tau$) was fit log data from real world griffon pro flights.
+\begin{equation}
+\alpha_{w}= tan^{-1}\frac{\dot{z}}{\dot{x}} \qquad \alpha_{e} = \alpha_{w}+\epsilon\tau
+\label{eq:aoas}
+\end{equation}
+
+\begin{equation}
+\sigma_{x}(\alpha) = \frac{1+e^{-M_x(\alpha-t_{l_{x}})} + e^{M_x(\alpha-t_{u_{x}})}} {(1+e^{-M_x(\alpha-t_{l_{x}})})(1+e^{M_x(\alpha-t_{u_{x}})})}
+\label{eq:simga}
+\end{equation}
+
+The Resulting Coeffcients of the wing can be seen in Figure \ref{fig:wing} where we have a continous function throughout $[-\pi,\pi]$
+
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/Coefficient}
+  \caption{Griffon Pro Wing Aerodynamic Coeffcients}
+  \label{fig:wing}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/Coefficient_elev}
+  \caption{Griffon Pro Elevator Aerodynamic Coeffcients at $\epsilon=0$}
+  \label{fig:elev}
+\end{figure}
+
+\FloatBarrier
+
+\begin{table}[ht]
+  \centering
+
+  \label{tab:basic_table}
+  \begin{tabular}{|l|c|l|c|}
+    \hline
+    Coeffcient & Value & Coeffcient & Value  \\
+    \hline
+    $C_{l0_{w}}$ & 1.9164 & $C_{l\alpha_{w}}$ & 11.6632\\
+    $C_{l0_{e}}$ & 0 & $C_{l\alpha_{e}}$ & 6.8755\\
+    $C_{d0_{w}}$ & 0.075 & $C_{d\alpha_{w}}$ & 4.015\\
+    $C_{d0_{e}}$ & 0 .01& $C_{d\alpha_{e}}$ & 1.7968\\
+    $t_{l_{w}}$ & -0.18 & $t_{u_{w}}$ & 0.28 \\
+    $t_{l_{e}}$ & -0.28 & $t_{u_{e}}$ & 0.28 \\
+    $M_w$ & 1 & $M_e$ & 26 \\
+    $\tau$ & 2.7& & \\
+   
+    \hline
+  \end{tabular}
+  \caption{Aerodynamics Coefficients}
+\end{table}
+\FloatBarrier
+
+\subsection{Rotor Forces}
+The trajectory in section 3.2.6 utilises the non axial drag component the rotors produce when the freestream velocity has a perpendicular compenent to the rotor axle to dissipate kinetic energy from the aircraft, to model this behaviour the following equations were employed.
+
+
+\begin{equation}
+L_{front}=\frac{1}{2} N_{b} \rho c R_{r}^{3}\omega_{front}^{2} C_{T}, \qquad D_{front}=\frac{L_{front}(\dot{x}_{front})}{R_{r}\omega_{front}}
+\label{eq:front_rotor}
+\end{equation}
+\begin{equation}
+L_{rear}=\frac{1}{2} N_{b} \rho c R_{r}^{3} \omega_{rear}^{2} C_{T}, \qquad D_{rear}=\frac{L_{rear}(\dot{x}_{rear})}{R_{r}\omega_{rear}}
+\label{eq:rear_rotor}
+\end{equation}
+
+where $N_{b}$ is the number of blades of the rotor, $\rho$ is air density,$c$ is the average chord of the airfoil, $R_{r}$ is the radius of the rotor and $C_{T}$ is the coefficient of thrust, it was estimated for hover by solving equation \eqref{eq:thrust_coeff} which is the lift of the front and rear rotors equated to the weight force of the aircraft with the values from a real world flight log substituted for $m,\rho,\omega$
+
+\begin{equation}
+\dot{X}_{front}=R_{IR}(\theta+\xi)X_{inertial}, \qquad \dot{X}_{rear}=R_{IR}(\theta+\xi)X_{inertial}, \qquad  {X}=\begin{bmatrix}{x}\\{z} \end{bmatrix}
+\label{eq:rotor_velocity_sim}
+\end{equation}
+
+\begin{equation}
+C_{T}=\frac{2mg}{N_{b} \rho c R_{r}^{3} (\omega_{front}+\omega_{rear})}
+\label{eq:thrust_coeff}
+\end{equation}
+
+
+
+
+
 
 \begin{comment}
 \subsection{Aerodynamic Surfaces}
@@ -16,15 +178,9 @@ The model used in this project is the same as that presented in Fraser Miller's 
 \subsection{Dynamics}
 \end{comment}
 \section{Trajectory Optimisation}
-The MATLAB library OptimTraj **intext** was used to solve the optimisation problem for the transition trajectory. OptimTraj utilises MATLAB's fmincon solver.
+The MATLAB library OptimTraj \cite{kelly2022optimtraj} was used to solve the optimisation problem for the transition trajectory. OptimTraj utilises MATLAB's fmincon solver.
 
-\subsection{Model Setup}
-The aircraft model discussed above was arranged into a statespace representation. 
-\begin{equation}
-Y=\begin{bmatrix} x&z&\theta&\dot{x}&\dot{z}&\dot{\theta}\end{bmatrix}^T, \qquad
-U=\begin{bmatrix} \omega_{f}&\omega_{r}&\xi&\epsilon\end{bmatrix}^T
-\label{eq:state_input}
-\end{equation}
+
 \subsection{Constraints}
 The constraints for the trajectory optimisation were as follows.
 \begin{equation}
@@ -60,12 +216,14 @@ Y_{initialisation}=\begin{bmatrix}Y_{initial},&Y_{final}\end{bmatrix},U_{initial
 \subsection{Mesh Refinement}
 The optimisation mesh would initially be calculated with 0.5s timesteps ($\Delta t$), and time would be a free variable. After the initial solution had converged, the total time would be rounded to the nearest 0.5s and be set as a constraint and the timesteps would be reduced to 0.25s, with the initial solution replacing the previous initialisations for state and control input. This process was repeated until a time step of 0.1s was achieved.
 \subsection{Cost Function}
-The goal of this optimisation is to find the most energy efficient landing transition trajectory, as such the cost function was set to the total energy consumed during the transition phase, with the assumption that elevator and tilt inputs would cause marginal differences the cost function was simplified to be the energy the rotors require.
+The goal of this optimisation is to find the most energy efficient landing transition trajectory, as such the cost function was set to the total energy consumed during the transition phase, with the assumption that elevator and tilt inputs would cause marginal differences the cost function was therefore simplified to be the energy the rotors require throughout the trajectory.
 
 \begin{equation}
 J_{trajectory} = \sum_{i=0}^{\frac{t_{f}}{\Delta t}} 2(P_{front_{i}} +P_{rear_{i}})\Delta t
 \label{eq:traj_cost}
 \end{equation}
+
+The power estimates show in \ref{eq:traj_cost} are derived using the method shown in  \cite{miller2025thesis}, and can also be found in Appendix ??.
 
 \subsection{Solution}
 \begin{figure}[htbp]
@@ -121,7 +279,7 @@ where $Q \in \mathbb{R}^{6\times6}$ is the state error cost matrix and $R \in \m
 Q_{ii}=\frac{1}{\bar{y}_{i_{max}}^2}, R_{ii}=\frac{1}{\bar{u}_{i_{max}}^2}
 \label{eq:brysons_rule}
 \end{equation}
-resulting in the following values for the Griffin Pro: $Q=diag(4,4,14.5903,1.111\times 10^-3,25,8.2070)$ and $R=diag(4\times 10^{-6},4\times 10^{-6},1.3131\times 10^{4},1.4590\times 10^{3})$. With Q and R selected the discrete time Riccati equations can be solved and the gain matrices calculated.
+resulting in the following values for the Griffin Pro: $Q=diag(4,4,14.5903,1.111\times 10^-3,25,8.2070)$ and $R=diag(4\times 10^{-6},4\times 10^{-6},1.3131\times 10^{4},1.4590\times 10^{3})$. With Q and R selected the differential  Riccati equations can be solved moving back from the terminal point of the trajectory assuming zero final state and input error, to find the gain matrices.
 
 \begin{equation}
 -\dot{S}(t)=A^{T}(t)S(t)+S(t)A(t)-S(t)B(t)R^{-1}B^{T}(t)S(t)+Q
@@ -258,36 +416,17 @@ As part of the vailidation process before moving to real flight tests, a series 
 
 \section{Simulation Enviroment}
 \subsection{Rotor Model}
-The trajectory in section 3.2.6 utilises the non axial drag component the rotors produce when the freestream velocity is perpendicular to the rotor axle to dissipate kinetic energy from the aircraft. However the public release of ArduPilot's simulation environment doesn't model these forces and therefore I have modified the simulator to model the rotors utilising momentum theory. These changes to the rotor model work with any controller or aircraft running ArduPilot and thus other may wish to use it in their own simulations.
-
-The Rotor lift and drag in the rotor frame are defined in equations \eqref{eq:front_rotor} and \eqref{eq:rear_rotor}.
-
-\begin{equation}
-L_{front}=\frac{1}{2} N_{b} \rho c R_{r}^{3}\omega_{front}^{2} C_{T}, \qquad D_{front}=\frac{L_{front}(\dot{x}_{front}+\dot{y}_{front})}{R_{r}\omega_{front}}
-\label{eq:front_rotor}
-\end{equation}
-\begin{equation}
-L_{rear}=\frac{1}{2} N_{b} \rho c R_{r}^{3} \omega_{rear}^{2} C_{T}, \qquad D_{rear}=\frac{L_{rear}(\dot{x}_{rear}+\dot{y}_{rear})}{R_{r}\omega_{rear}}
-\label{eq:rear_rotor}
-\end{equation}
-
-where $N_{b}$ is the number of blades of the rotor, $\rho$ is air density,$c$ is the average chord of the airfoil, $R_{r}$ is the radius of the rotor and $C_{T}$ is the coefficient of thrust, it was estimated for hover by solving equation \eqref{eq:thrust_coeff} which is the lift of the front and rear rotors equated to the weight force of the aircraft with the values from a real world flight log substituted for $m,\rho,\omega$
+The public release of ArduPilot's simulation environment doesn't model the non-axial forces of the rotors and therefore I have modified the simulator to model the rotors utilising momentum theory. These changes to the rotor model work with any controller or aircraft running ArduPilot and thus other may wish to use it in their own simulations.
+The implementations of these changes follow the same approach as those shown in section 3.1.2, with a varition in how the velocity is the drag term is calculated to work in the three dimenstional simulation.
 
 \begin{equation}
 \dot{X}_{front}=R_{IR}(\phi,\theta+\xi-\frac{\pi}{2},\psi), \qquad \dot{X}_{rear}=R_{IR}(\phi,\theta+\xi,\psi), \qquad  {X}=\begin{bmatrix}{x}\\{y}\\{z} \end{bmatrix}
-\label{eq:rotor_velocity}
+\label{eq:rotor_velocity_sim}
 \end{equation}
-
-\begin{equation}
-C_{T}=\frac{2mg}{N_{b} \rho c R_{r}^{3} (\omega_{front}+\omega_{rear})}
-\label{eq:thrust_coeff}
-\end{equation}
-
-
 
 \section{Safety Features}
 \subsection{Altitude Floor}
-The Altitude floor is a minimum altitude that if exceeded will cease the control input overrides, returning control to the stock ArduPilot controller. Controller wind up is a concern for the stock controller at handoff, however, from simulation testing it has not been a problem, reference figure 3.8.
+The Altitude floor is a minimum altitude that if exceeded will cease the control input overrides, returning control to the stock ArduPilot controller. Controller wind up is a concern for the stock controller at handoff, however, from simulation testing it has not been a problem, reference \ref{fig:alt_floor}.
 
 \begin{figure}[htbp]
   \centering
@@ -297,5 +436,5 @@ The Altitude floor is a minimum altitude that if exceeded will cease the control
 \end{figure}
 
 \subsection{State Error Disconnect}
-Another method for rejecting the landing sequence is if the norm of the state error surpasses a preset limit. This triggers in two cases, the first is the aircraft failing to track the trajectory ref figure X, the second being a mismatch in the initial condition for example if the trajectory had not been updated and was made for a different altitude approach.
+Another method for rejecting the landing sequence is if the norm of the state error surpasses a preset limit. This triggers in two cases, the first is the aircraft failing to track the trajectory (refer to \ref{fig:alt_floor}), the second being a mismatch in the initial condition for example if the trajectory had not been updated and was made for a different altitude approach.
 

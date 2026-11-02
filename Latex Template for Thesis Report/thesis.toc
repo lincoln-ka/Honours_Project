@@ -9,38 +9,39 @@
 \contentsline {chapter}{\numberline {2}Literature Review}{2}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Powered Lift Aircraft and the Back-Transition}{2}{section.2.1}%
 \contentsline {section}{\numberline {2.2}Transition Control}{3}{section.2.2}%
-\contentsline {section}{\numberline {2.3}Trajectory Optimisation}{4}{section.2.3}%
+\contentsline {section}{\numberline {2.3}Optimal Control}{4}{section.2.3}%
 \contentsline {section}{\numberline {2.4}Post-Stall Manoeuvring and Perching}{4}{section.2.4}%
 \contentsline {section}{\numberline {2.5}Trajectory Tracking with Time-Varying LQR}{5}{section.2.5}%
 \contentsline {section}{\numberline {2.6}Rotor Aerodynamics in Non-Axial Flow}{5}{section.2.6}%
 \contentsline {section}{\numberline {2.7}Implementation on Open-Source Autopilots}{6}{section.2.7}%
 \contentsline {section}{\numberline {2.8}Summary and Research Gap}{6}{section.2.8}%
 \contentsline {chapter}{\numberline {3}Methodology}{7}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Aircraft Modelling}{7}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Trajectory Optimisation}{7}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Model Setup}{7}{subsection.3.2.1}%
-\contentsline {subsection}{\numberline {3.2.2}Constraints}{7}{subsection.3.2.2}%
-\contentsline {subsection}{\numberline {3.2.3}Initialisation}{8}{subsection.3.2.3}%
-\contentsline {subsection}{\numberline {3.2.4}Mesh Refinement}{8}{subsection.3.2.4}%
-\contentsline {subsection}{\numberline {3.2.5}Cost Function}{8}{subsection.3.2.5}%
-\contentsline {subsection}{\numberline {3.2.6}Solution}{8}{subsection.3.2.6}%
-\contentsline {section}{\numberline {3.3}Control}{9}{section.3.3}%
-\contentsline {subsection}{\numberline {3.3.1}LQR}{9}{subsection.3.3.1}%
-\contentsline {subsubsection}{\numberline {3.3.1.1}LQR Gains}{10}{subsubsection.3.3.1.1}%
-\contentsline {subsection}{\numberline {3.3.2}Lateral Stabilisation}{10}{subsection.3.3.2}%
-\contentsline {section}{\numberline {3.4}Simulation Enviroment}{12}{section.3.4}%
-\contentsline {subsection}{\numberline {3.4.1}Rotor Model}{12}{subsection.3.4.1}%
-\contentsline {section}{\numberline {3.5}Safety Features}{13}{section.3.5}%
-\contentsline {subsection}{\numberline {3.5.1}Altitude Floor}{13}{subsection.3.5.1}%
-\contentsline {subsection}{\numberline {3.5.2}State Error Disconnect}{13}{subsection.3.5.2}%
-\contentsline {chapter}{\numberline {4}Results and Analysis}{14}{chapter.4}%
-\contentsline {chapter}{\numberline {5}Conclusions and Future Development}{19}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Conclusion}{19}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Future Development}{19}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}Validation}{19}{subsection.5.2.1}%
-\contentsline {subsection}{\numberline {5.2.2}Model Expansion}{19}{subsection.5.2.2}%
-\contentsline {subsection}{\numberline {5.2.3}Airframe types}{19}{subsection.5.2.3}%
-\contentsline {subsection}{\numberline {5.2.4}System Identification}{19}{subsection.5.2.4}%
-\contentsline {chapter}{\numberline {A}Appendix A: The First}{21}{appendix.A}%
-\contentsline {chapter}{\numberline {B}Appendix B: The Second}{22}{appendix.B}%
-\contentsline {chapter}{Bibliography}{23}{appendix*.30}%
+\contentsline {section}{\numberline {3.1}Aircraft Dynamical Model}{7}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Aerodynamic Surface Forces}{8}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Rotor Forces}{10}{subsection.3.1.2}%
+\contentsline {section}{\numberline {3.2}Trajectory Optimisation}{10}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Constraints}{10}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Initialisation}{11}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Mesh Refinement}{11}{subsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.2.4}Cost Function}{11}{subsection.3.2.4}%
+\contentsline {subsection}{\numberline {3.2.5}Solution}{11}{subsection.3.2.5}%
+\contentsline {section}{\numberline {3.3}Control}{13}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}LQR}{13}{subsection.3.3.1}%
+\contentsline {subsubsection}{\numberline {3.3.1.1}LQR Gains}{13}{subsubsection.3.3.1.1}%
+\contentsline {subsection}{\numberline {3.3.2}Lateral Stabilisation}{14}{subsection.3.3.2}%
+\contentsline {section}{\numberline {3.4}Simulation Enviroment}{16}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Rotor Model}{16}{subsection.3.4.1}%
+\contentsline {section}{\numberline {3.5}Safety Features}{16}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}Altitude Floor}{16}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}State Error Disconnect}{16}{subsection.3.5.2}%
+\contentsline {chapter}{\numberline {4}Results and Analysis}{18}{chapter.4}%
+\contentsline {chapter}{\numberline {5}Conclusions and Future Development}{23}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Conclusion}{23}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Future Development}{23}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Validation}{23}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}Model Expansion}{23}{subsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.2.3}Airframe types}{23}{subsection.5.2.3}%
+\contentsline {subsection}{\numberline {5.2.4}System Identification}{23}{subsection.5.2.4}%
+\contentsline {chapter}{\numberline {A}Appendix A: The First}{25}{appendix.A}%
+\contentsline {chapter}{\numberline {B}Appendix B: The Second}{26}{appendix.B}%
+\contentsline {chapter}{Bibliography}{27}{appendix*.35}%
