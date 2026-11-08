@@ -6,13 +6,16 @@ Provide an answer to your research question or evaluation of overall results giv
 \end{comment}
 
 \section{Conclusion}
+With the application of model based optimal control the energy consumption of a Arace Griffin Pro UAV during landing approach has been reduced by $61\%$ and the duration reduced by $51\%$ in simulation, This can improve efficiency, payload and range, without the need for any new hardware. Obviously as these are initial results more work needs to be done on this project to validate it before this could be pushed to a general ArduPilot build.
+\begin{comment}
 The project so far has been a success in reducing the energy consumption of the aircraft during the landing transition achieving a $61\%$ reduction, with the added benefit of a substantial time reduction, however as the results are only simulations real world testing is required to fully validate these results.
+\end{comment}
 
 \section{Future Development}
 The work put forward in this project while promising is not complete, and there are several areas of future work on this topic worth pursuing.
 
 \subsection{Validation}
-This project has only presented results from simulation. Real world flight testing is required to validate the control with the extra latency associated with the microcontroller, any model mismatch between the dynamical model presented in section 3.1 and real environmental disturbances such as wind, which have been simulated (refer to appendix XXX for hover gust response simulations.).
+This project has only presented results from simulation. Real world flight testing is required to validate the control with the extra latency associated with the microcontroller, any model mismatch between the dynamical model presented in section 3.1 and real environmental disturbances such as wind, which have been simulated.
 
 \subsection{Model Expansion}
 While the initial decision was taken to limit the dynamical model to the longitudinal frame to reduce complexity, it now seems prudent to incorporate the lateral dynamics, as it would allow the lateral stabilisation to be incorporated into the LQR controller rather than the current PD solution, as well as allowing for three dimensional approaches, which would mitigate one of the limitations of the current trajectories requiring a long clear lane to approach the landing point.

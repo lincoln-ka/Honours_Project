@@ -2,28 +2,48 @@
 \vspace{-1.4em}
 \begin{comment}
 When presenting your results, it is important that you organise them in an orderly manner to avoid clusters of information. Be critical and properly analyse what the results mean. Provide insightful discussion and explanation. Consider using other published articles to support or argue your results. Make sure it clear which work are yours and which are background materials. Also, include the implication of your results.
-\end{comment}
 
 With the application of model based optimal control the energy consumption of a Arace Griffin Pro UAV during landing approach has been reduced by $61\%$, This can improve efficiency, payload and range, without the need for any new hardware. This approach could be broadened to apply to all powered lift aircraft running ArduPilot.
 
-Figure 4.1 shows that the primary reduction in energy consumption comes from the lack time spent in the hover phase (xs to ys) as the Lua controller only hovers down 10m instead of the stock 50m, with the hover portion of the approach able to be reduced even further by changing the optimisation constraints in section 3.2.2 to achieve even higher efficiency, if the operator is comfortable with the increased risk.
+\end{comment}
+
+\section{Trajectory Result}
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.8\textwidth]{images/landing_energy}
-  \caption{Landing Approach Energy Consumption}
-  \label{fig:Landing Approach Energy Consumption}
+  \includegraphics[width=0.8\textwidth]{images/Figure_14_OPT}
+  \caption{Trajectory Optimisation Solution}
+  \label{fig:Open-Loop Traj}
 \end{figure}
+
+
+The solution of the trajectory optimisation can be found in \ref{fig:Open-Loop States} \& \ref{fig:Open-Loop Control}, where you can see the aircraft initially enters a dive, riding the negative pitch constraint ($-20 \, deg$) until an altitude of $17 \, m$. At which point the aircraft pulls up, briefly hitting the positive pitch rate constraint ($15 \, deg/s$), until stall is achieved, which is subsequently held till the aircraft reaches the termination condition. This results in a total energy consumption of $4536 \, J$ (This can't be compared directly with the results in \ref{fig:Landing Approach Energy Consumption} as this value doesn't include the energy associated with the final hover phase as that is not part of the trajectory optimisation).
+The inputs for the optimised trajectory (\ref{fig:Open-Loop Control}) remained bounded throughout the approach and are absent of any oscillatory behaviour, providing a smooth feedforward term for the controller to track.
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.8\textwidth]{images/landing_power}
-  \caption{Landing Approach Power}
-  \label{fig:Landing Approach Power}
+  \includegraphics[width=0.8\textwidth]{images/open_loop_states}
+  \caption{Trajectory Optimisation Solution States}
+  \label{fig:Open-Loop States}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/open_loop_control_inputs}
+  \caption{Trajectory Optimisation Solution Control Inputs}
+  \label{fig:Open-Loop Control}
 \end{figure}
 
 \FloatBarrier
+Another approach for analysing the trajectory is the energy states. To land the aircraft has two objectives, bleeding off the kinetic and potential energy. The solution trajectory immediately converts the potential energy to kinetic through the dive in the first 8s of the approach, followed by a pull up into a stall, that hits the pitch rate constraint causing the gain in height, however this stall also dissipates the vast majority of the kinetic energy, which remains largely constant in final stage of the approach (12s-30.5s) as the aircraft holds the upper angle of attack constraint ($20\deg$) and therefore a stall stabilised with the quad rotors to slowly approach the hover for handover.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/landing_energys}
+  \caption{Landing Approach Energy States}
+  \label{fig:Landing Approach Energy States}
+\end{figure}
 
-The controller prioritises tracking the positions over the rates as seen in figures 4.3 through 4.10. on the basis of a small error in climb rate is less important than a error in altitude when diving towards the ground as seen in first 8s of the landing approach.
+\section{Control Results}
+The longitudinal LQR controller prioritises tracking the positions over the associated velocities as seen in figures \ref{fig:x_pair} through \ref{fig:theta_pair}. This trade off was made on the basis of a small error in velocities would be less detrimental than a error in position, for example during the initial dive towards the ground as seen in first 8s of the landing approach as position overshoot could result in the aircraft nosediving into the ground especially if this controller was run with a trajectory that prioritised efficiency more and had the termination condition at ground level rather than a 10m offset. The aircraft pitch \ref{fig:theta_pair} does track far worse than the other two position in the LQR, that is due to the coupling of pitch to altitude and longitudinal position, and the controller prioritising the other two over pitch. This tradeoff was also made in the lateral controller 
+ as seen in the difference of tracking performance between \ref{fig:y_pair} and \ref{fig:phi_pair}, \ref{fig:psi_pair}.
 
 Further improvement could be made to the lateral control by incorporating the rudder and aileron into the script controller, this would also have the added benefit of relaxing the constraints on the waypoints in ArduPilot, as the current solution requires a waypoint that lies on the line drawn between the VTOL Landing and the previous waypoint to be the trajectory $x[0]-waypoint_{radius}$  from the landing waypoint. if it lies off the line the ArduPilot driven control surfaces, primarily the ailerons will drive the aircraft off track.
 
@@ -144,11 +164,13 @@ The other benefit of incorporating the full lateral dynamics would be that the l
   \caption{Simulation $\psi$ and $\dot{\psi}$}
   \label{fig:psi_pair}
 \end{figure}
+\FloatBarrier
+The inputs throughout the trajectory (\ref{fig:omega}-\ref{fig:epsilon_xi_pair}), for the most part show that the controller is not overworking and oscillating the inputs excessively, with the exception of the elevator in the first third ($10:59:45-10:59:55$) during the dive. This could likely be removed by increasing the cost on the elevator in the LQR.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.8\textwidth]{images/rpms}
-  \caption{Simulation $\omega$}
+  \caption{Simulation $\omega_{1-4}$}
   \label{fig:omega}
 \end{figure}
 
@@ -172,14 +194,46 @@ The other benefit of incorporating the full lateral dynamics would be that the l
 \end{figure}
 \FloatBarrier
 
+
+
+The other aspect of evaluating the controller is disturbance rejection, figures \ref{fig:headwind}, \ref{fig:crosswind} show the controller's response to a step in wind from $0\,m/s$ to various speeds. The aircraft remains stable in all of these tests, although the controller especially in the headwind case sacrifices the aircraft attitude to stabilise the position compared to that of the ArduPilot controller.
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.8\textwidth]{images/landing_energys}
-  \caption{Landing Approach Energy States}
-  \label{fig:Landing Approach Energy States}
+  \includegraphics[width=0.8\textwidth]{images/headwind}
+  \caption{Headwind Step Response Peak in Hover}
+  \label{fig:headwind}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/crosswind}
+  \caption{Crosswind Step Response Peak in Hover}
+  \label{fig:crosswind}
+\end{figure}
+\FloatBarrier
+
+Figure \ref{fig:Open-Loop States} shows that the primary reduction in energy consumption comes from the lack time spent in the hover phase ($31.5s$ to $56s$) as the Lua controller only hovers down 10m instead of the stock 50m, with the hover portion of the approach able to be reduced even further by changing the optimisation constraints in section 3.2 to achieve even higher efficiency, if the operator is comfortable with the increased risk.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/landing_energy}
+  \caption{Landing Approach Energy Consumption}
+  \label{fig:Landing Approach Energy Consumption}
 \end{figure}
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/landing_power}
+  \caption{Landing Approach Power}
+  \label{fig:Landing Approach Power}
+\end{figure}
 
-The approach trajectory has two objectives of bleeding off the kinetic and potential energy of the aircraft. The solution immediately converts the potential energy to kinetic through the dive in the first 8s of the approach, followed by a pull up into a stall, that hits the pitch rate constraint causing the gain in height, however this stall also dissipates the vast majority of the kinetic energy, which remains largely constant in final stage of the approach (12s-30.5s) as the aircraft holds the upper angle of attack constraint ($20\deg$) and therefore a stall stabilised with the quad rotors to slowly approach the hover for handover.
+\FloatBarrier
 
+\subsection{Landing Rejection}
+As part of the implementation a landing rejection criteria was added, figure \ref{fig:alt_floor} shows the result of this being triggered and specifically the lack of controller wind up of the stock ArduPilot controller as it takes over control as the rejection is triggered.
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/15m_rejection Alt}
+  \caption{Altitude Floor Rejected Landing (15m)}
+  \label{fig:alt_floor}
+\end{figure}

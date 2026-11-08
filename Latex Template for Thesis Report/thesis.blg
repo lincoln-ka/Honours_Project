@@ -35,45 +35,45 @@ Warning--empty year in ardupilot_lua
 Warning--empty year in ardupilot_quadplane
 Warning--empty year in ardupilot_sitl
 Warning--empty year in cantrell_settling
-You've used 28 entries,
+You've used 29 entries,
             2773 wiz_defined-function locations,
-            767 strings with 9065 characters,
-and the built_in function-call counts, 12016 in all, are:
-= -- 1067
-> -- 633
-< -- 21
-+ -- 219
-- -- 189
-* -- 929
-:= -- 1844
-add.period$ -- 91
-call.type$ -- 28
-change.case$ -- 144
-chr.to.int$ -- 26
-cite$ -- 60
-duplicate$ -- 555
-empty$ -- 1048
-format.name$ -- 239
-if$ -- 2519
+            773 strings with 9167 characters,
+and the built_in function-call counts, 12319 in all, are:
+= -- 1095
+> -- 643
+< -- 22
++ -- 223
+- -- 192
+* -- 942
+:= -- 1891
+add.period$ -- 95
+call.type$ -- 29
+change.case$ -- 148
+chr.to.int$ -- 27
+cite$ -- 62
+duplicate$ -- 570
+empty$ -- 1080
+format.name$ -- 243
+if$ -- 2585
 int.to.chr$ -- 3
 int.to.str$ -- 1
 missing$ -- 26
-newline$ -- 155
-num.names$ -- 112
-pop$ -- 317
+newline$ -- 161
+num.names$ -- 116
+pop$ -- 329
 preamble$ -- 1
-purify$ -- 119
+purify$ -- 122
 quote$ -- 0
-skip$ -- 416
+skip$ -- 428
 stack$ -- 0
-substring$ -- 430
-swap$ -- 44
+substring$ -- 432
+swap$ -- 45
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 288
+type$ -- 299
 warning$ -- 4
-while$ -- 113
+while$ -- 116
 width$ -- 0
-write$ -- 374
+write$ -- 388
 (There were 6 warnings)

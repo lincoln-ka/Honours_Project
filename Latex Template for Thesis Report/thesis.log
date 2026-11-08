@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.8.21)  2 NOV 2026 17:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.8.21)  6 NOV 2026 16:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -541,10 +541,12 @@ LaTeX Warning: Label `tab:basic_table' multiply defined.
 LaTeX Warning: Label `tab:basic_table' multiply defined.
 
 
+LaTeX Warning: Label `tab:basic_table' multiply defined.
+
+
 LaTeX Warning: Label `eq:rotor_velocity_sim' multiply defined.
 
-) (results-analysis.aux) (conclusions-future.aux) (appendix1.aux)
-(appendix2.aux))
+) (results-analysis.aux) (conclusions-future.aux) (appendix1.aux))
 \openout1 = `thesis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 76.
@@ -565,7 +567,8 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 76.
 LaTeX Font Info:    ... okay on input line 76.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 76.
 LaTeX Font Info:    ... okay on input line 76.
- (C:\Program Files\MiKTeX\tex/latex/ucs\ucsencs.def
+
+(C:\Program Files\MiKTeX\tex/latex/ucs\ucsencs.def
 File: ucsencs.def 2011/01/21 Fixes to fontencodings LGR, T3
 )
 (C:\Users\linky\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mk
@@ -638,7 +641,7 @@ Package hyperref Info: Link coloring OFF on input line 76.
 * \@reversemargintrue
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-<images/logo.pdf, id=186, 159.39749pt x 54.63066pt>
+<images/logo.pdf, id=166, 159.39749pt x 54.63066pt>
 File: images/logo.pdf Graphic file (type pdf)
 <use images/logo.pdf>
 Package pdftex.def Info: images/logo.pdf  used on input line 102.
@@ -751,7 +754,7 @@ File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
  (introduction.tex
 Chapter 1.
 Excluding 'comment' comment. Excluding 'comment' comment.
-<images/griffin1.png, id=338, 295.85532pt x 142.28156pt>
+<images/griffin1.png, id=327, 295.85532pt x 142.28156pt>
 File: images/griffin1.png Graphic file (type png)
 <use images/griffin1.png>
 Package pdftex.def Info: images/griffin1.png  used on input line 30.
@@ -768,7 +771,7 @@ Excluding 'comment' comment.) [1
  (background.tex
 Chapter 2.
 Excluding 'comment' comment.
-<images/ardupilotlanding.png, id=349, 437.2335pt x 247.032pt>
+<images/ardupilotlanding.png, id=338, 437.2335pt x 247.032pt>
 File: images/ardupilotlanding.png Graphic file (type png)
 <use images/ardupilotlanding.png>
 Package pdftex.def Info: images/ardupilotlanding.png  used on input line 43.
@@ -779,34 +782,18 @@ Package pdftex.def Info: images/ardupilotlanding.png  used on input line 43.
 
 
  <./images/ardupilotlanding.png>]
-<images/VRS.png, id=359, 365.86688pt x 180.675pt>
+<images/VRS.png, id=349, 365.86688pt x 124.21407pt>
 File: images/VRS.png Graphic file (type png)
 <use images/VRS.png>
 Package pdftex.def Info: images/VRS.png  used on input line 53.
-(pdftex.def)             Requested size: 386.95897pt x 191.10104pt.
- [3 <./images/VRS.png>]
-
-LaTeX Warning: Reference `sec:trajopt' on page 4 undefined on input line 73.
-
-[4]
-
-LaTeX Warning: Reference `fig:lqr_eig' on page 5 undefined on input line 91.
-
-
-LaTeX Warning: Reference `sec:rotor_model' on page 5 undefined on input line 10
-2.
-
-
-LaTeX Warning: Reference `sec:lqr_gains' on page 5 undefined on input line 107.
-
-
-[5]) [6]
+(pdftex.def)             Requested size: 386.95897pt x 131.38196pt.
+ [3 <./images/VRS.png>] [4] [5]) [6]
 \openout2 = `methodology.aux'.
 
  (methodology.tex
 Chapter 3.
 Excluding 'comment' comment.
-<images/model.png, id=431, 783.67781pt x 501.37312pt>
+<images/model.png, id=425, 783.67781pt x 501.37312pt>
 File: images/model.png Graphic file (type png)
 <use images/model.png>
 Package pdftex.def Info: images/model.png  used on input line 12.
@@ -817,249 +804,265 @@ Package pdftex.def Info: images/model.png  used on input line 12.
 
 
  <./images/model.png>] Excluding 'comment' comment.
-<images/Coefficient.png, id=449, 672.5928pt x 439.4016pt>
+<images/Coefficient.png, id=442, 672.5928pt x 439.4016pt>
 File: images/Coefficient.png Graphic file (type png)
 <use images/Coefficient.png>
 Package pdftex.def Info: images/Coefficient.png  used on input line 108.
 (pdftex.def)             Requested size: 386.95897pt x 252.80815pt.
-<images/Coefficient_elev.png, id=450, 672.5928pt x 439.4016pt>
+<images/Coefficient_elev.png, id=443, 672.5928pt x 439.4016pt>
 File: images/Coefficient_elev.png Graphic file (type png)
 <use images/Coefficient_elev.png>
 Package pdftex.def Info: images/Coefficient_elev.png  used on input line 115.
 (pdftex.def)             Requested size: 386.95897pt x 252.80815pt.
  [8] [9 <./images/Coefficient.png (PNG copy)> <./images/Coefficient_elev.png (P
-NG copy)>] Excluding 'comment' comment.
-[10]
-<images/open_loop_states.png, id=487, 1160.6562pt x 566.5968pt>
-File: images/open_loop_states.png Graphic file (type png)
-<use images/open_loop_states.png>
-Package pdftex.def Info: images/open_loop_states.png  used on input line 231.
-(pdftex.def)             Requested size: 386.95897pt x 188.90547pt.
-<images/open_loop_control_inputs.png, id=488, 1162.5834pt x 563.2242pt>
-File: images/open_loop_control_inputs.png Graphic file (type png)
-<use images/open_loop_control_inputs.png>
-Package pdftex.def Info: images/open_loop_control_inputs.png  used on input lin
-e 237.
-(pdftex.def)             Requested size: 386.95897pt x 187.46306pt.
- [11] [12 <./images/open_loop_states.png (PNG copy)> <./images/open_loop_contro
-l_inputs.png (PNG copy)>]
+NG copy)>]
+<images/rot_lift.png, id=467, 677.8926pt x 439.4016pt>
+File: images/rot_lift.png Graphic file (type png)
+<use images/rot_lift.png>
+Package pdftex.def Info: images/rot_lift.png  used on input line 174.
+(pdftex.def)             Requested size: 386.95897pt x 250.82356pt.
+<images/rot_drag.png, id=468, 675.0018pt x 439.4016pt>
+File: images/rot_drag.png Graphic file (type png)
+<use images/rot_drag.png>
+Package pdftex.def Info: images/rot_drag.png  used on input line 181.
+(pdftex.def)             Requested size: 386.95897pt x 251.8896pt.
+ [10] [11 <./images/rot_lift.png (PNG copy)> <./images/rot_drag.png (PNG copy)>
+] Excluding 'comment' comment.
+Excluding 'comment' comment. [12]
 <images/Block Diagram.png, id=501, 863.225pt x 417.56pt>
 File: images/Block Diagram.png Graphic file (type png)
 <use images/Block Diagram.png>
-Package pdftex.def Info: images/Block Diagram.png  used on input line 247.
+Package pdftex.def Info: images/Block Diagram.png  used on input line 292.
 (pdftex.def)             Requested size: 386.95897pt x 187.18028pt.
  [13 <./images/Block Diagram.png>]
 <images/rotor_control.png, id=513, 438.6789pt x 87.4467pt>
 File: images/rotor_control.png Graphic file (type png)
 <use images/rotor_control.png>
-Package pdftex.def Info: images/rotor_control.png  used on input line 300.
+Package pdftex.def Info: images/rotor_control.png  used on input line 346.
 (pdftex.def)             Requested size: 386.95897pt x 77.14012pt.
-<images/lat_stab.png, id=514, 1120.185pt x 578.16pt>
+<images/lat_stab.png, id=515, 1120.185pt x 578.16pt>
 File: images/lat_stab.png Graphic file (type png)
 <use images/lat_stab.png>
-Package pdftex.def Info: images/lat_stab.png  used on input line 313.
+Package pdftex.def Info: images/lat_stab.png  used on input line 359.
 (pdftex.def)             Requested size: 386.95897pt x 199.72125pt.
  [14 <./images/rotor_control.png> <./images/lat_stab.png>] Excluding 'comment' 
 comment.
-<images/max_real_poles.png, id=524, 1165.956pt x 579.1236pt>
+<images/max_real_poles.png, id=527, 1165.956pt x 579.1236pt>
 File: images/max_real_poles.png Graphic file (type png)
 <use images/max_real_poles.png>
-Package pdftex.def Info: images/max_real_poles.png  used on input line 368.
+Package pdftex.def Info: images/max_real_poles.png  used on input line 414.
 (pdftex.def)             Requested size: 386.95897pt x 192.19829pt.
-<images/motor_gains.png, id=525, 1178.001pt x 570.933pt>
+<images/motor_gains.png, id=528, 1178.001pt x 570.933pt>
 File: images/motor_gains.png Graphic file (type png)
 <use images/motor_gains.png>
-Package pdftex.def Info: images/motor_gains.png  used on input line 377.
+Package pdftex.def Info: images/motor_gains.png  used on input line 423.
 (pdftex.def)             Requested size: 386.95897pt x 187.546pt.
 
 Excluding 'comment' comment. [15 <./images/max_real_poles.png (PNG copy)>]
-Excluding 'comment' comment.
-<images/15m_rejection Alt.png, id=532, 1387.584pt x 694.5147pt>
-File: images/15m_rejection Alt.png Graphic file (type png)
-<use images/15m_rejection Alt.png>
-Package pdftex.def Info: images/15m_rejection Alt.png  used on input line 433.
-(pdftex.def)             Requested size: 386.95897pt x 193.67857pt.
-) [16 <./images/motor_gains.png (PNG copy)>]
-[17 <./images/15m_rejection Alt.png>]
+Excluding 'comment' comment.) [16 <./images/motor_gains.png (PNG copy)>]
 \openout2 = `results-analysis.aux'.
 
- (results-analysis.tex
+
+(results-analysis.tex
 Chapter 4.
 Excluding 'comment' comment.
-<images/landing_energy.png, id=545, 383.031pt x 225.4824pt>
-File: images/landing_energy.png Graphic file (type png)
-<use images/landing_energy.png>
-Package pdftex.def Info: images/landing_energy.png  used on input line 12.
-(pdftex.def)             Requested size: 386.95897pt x 227.81111pt.
-<images/landing_power.png, id=546, 399.894pt x 224.5188pt>
-File: images/landing_power.png Graphic file (type png)
-<use images/landing_power.png>
-Package pdftex.def Info: images/landing_power.png  used on input line 19.
-(pdftex.def)             Requested size: 386.95897pt x 217.26564pt.
- [18
+<images/Figure_14_OPT.png, id=541, 1154.8746pt x 579.1236pt>
+File: images/Figure_14_OPT.png Graphic file (type png)
+<use images/Figure_14_OPT.png>
+Package pdftex.def Info: images/Figure_14_OPT.png  used on input line 13.
+(pdftex.def)             Requested size: 386.95897pt x 194.04515pt.
+<images/open_loop_states.png, id=546, 1160.6562pt x 566.5968pt>
+File: images/open_loop_states.png Graphic file (type png)
+<use images/open_loop_states.png>
+Package pdftex.def Info: images/open_loop_states.png  used on input line 24.
+(pdftex.def)             Requested size: 386.95897pt x 188.90547pt.
+<images/open_loop_control_inputs.png, id=547, 1162.5834pt x 563.2242pt>
+File: images/open_loop_control_inputs.png Graphic file (type png)
+<use images/open_loop_control_inputs.png>
+Package pdftex.def Info: images/open_loop_control_inputs.png  used on input lin
+e 30.
+(pdftex.def)             Requested size: 386.95897pt x 187.46306pt.
+ [17
 
 
 
 
- <./images/landing_energy.png (PNG copy)>]
-<images/x.png, id=551, 1387.584pt x 694.5147pt>
-File: images/x.png Graphic file (type png)
-<use images/x.png>
-Package pdftex.def Info: images/x.png  used on input line 38.
-(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
-<images/x_dot.png, id=552, 1387.584pt x 694.5147pt>
-File: images/x_dot.png Graphic file (type png)
-<use images/x_dot.png>
-Package pdftex.def Info: images/x_dot.png  used on input line 45.
-(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
-<images/z.png, id=553, 1387.584pt x 694.5147pt>
-File: images/z.png Graphic file (type png)
-<use images/z.png>
-Package pdftex.def Info: images/z.png  used on input line 57.
-(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
-<images/z_dot.png, id=554, 1387.584pt x 694.5147pt>
-File: images/z_dot.png Graphic file (type png)
-<use images/z_dot.png>
-Package pdftex.def Info: images/z_dot.png  used on input line 64.
-(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
-<images/theta.png, id=555, 1387.584pt x 694.5147pt>
-File: images/theta.png Graphic file (type png)
-<use images/theta.png>
-Package pdftex.def Info: images/theta.png  used on input line 76.
-(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
-<images/theta_dot.png, id=556, 1387.584pt x 694.5147pt>
-File: images/theta_dot.png Graphic file (type png)
-<use images/theta_dot.png>
-Package pdftex.def Info: images/theta_dot.png  used on input line 83.
-(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
-<images/y.png, id=557, 1387.584pt x 694.5147pt>
-File: images/y.png Graphic file (type png)
-<use images/y.png>
-Package pdftex.def Info: images/y.png  used on input line 95.
-(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
-<images/y_dot.png, id=558, 1387.584pt x 694.5147pt>
-File: images/y_dot.png Graphic file (type png)
-<use images/y_dot.png>
-Package pdftex.def Info: images/y_dot.png  used on input line 102.
-(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
-<images/phi.png, id=559, 1387.584pt x 694.5147pt>
-File: images/phi.png Graphic file (type png)
-<use images/phi.png>
-Package pdftex.def Info: images/phi.png  used on input line 114.
-(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
-<images/phi_dot.png, id=560, 1387.584pt x 694.5147pt>
-File: images/phi_dot.png Graphic file (type png)
-<use images/phi_dot.png>
-Package pdftex.def Info: images/phi_dot.png  used on input line 121.
-(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
-<images/psi.png, id=561, 1387.584pt x 694.5147pt>
-File: images/psi.png Graphic file (type png)
-<use images/psi.png>
-Package pdftex.def Info: images/psi.png  used on input line 133.
-(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
-<images/psi_dot.png, id=562, 1387.584pt x 694.5147pt>
-File: images/psi_dot.png Graphic file (type png)
-<use images/psi_dot.png>
-Package pdftex.def Info: images/psi_dot.png  used on input line 140.
-(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
-<images/rpms.png, id=563, 1387.584pt x 694.5147pt>
-File: images/rpms.png Graphic file (type png)
-<use images/rpms.png>
-Package pdftex.def Info: images/rpms.png  used on input line 150.
-(pdftex.def)             Requested size: 386.95897pt x 193.67857pt.
-<images/epsilon.png, id=564, 1387.584pt x 694.5147pt>
-File: images/epsilon.png Graphic file (type png)
-<use images/epsilon.png>
-Package pdftex.def Info: images/epsilon.png  used on input line 159.
-(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
-<images/xi.png, id=565, 1387.584pt x 694.5147pt>
-File: images/xi.png Graphic file (type png)
-<use images/xi.png>
-Package pdftex.def Info: images/xi.png  used on input line 166.
-(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
-
-[19 <./images/landing_power.png (PNG copy)> <./images/x.png> <./images/x_dot.pn
-g>] [20 <./images/z.png> <./images/z_dot.png> <./images/theta.png> <./images/th
-eta_dot.png> <./images/y.png> <./images/y_dot.png> <./images/phi.png> <./images
-/phi_dot.png>] [21 <./images/psi.png> <./images/psi_dot.png> <./images/rpms.png
-> <./images/epsilon.png> <./images/xi.png>]
-<images/landing_energys.png, id=593, 1387.584pt x 694.5147pt>
+ <./images/Figure_14_OPT.png (PNG copy)>]
+[18 <./images/open_loop_states.png (PNG copy)> <./images/open_loop_control_inpu
+ts.png (PNG copy)>]
+<images/landing_energys.png, id=556, 1387.584pt x 694.5147pt>
 File: images/landing_energys.png Graphic file (type png)
 <use images/landing_energys.png>
-Package pdftex.def Info: images/landing_energys.png  used on input line 177.
+Package pdftex.def Info: images/landing_energys.png  used on input line 39.
 (pdftex.def)             Requested size: 386.95897pt x 193.67857pt.
-) [22 <./images/landing_energys.png>]
+<images/x.png, id=563, 1387.584pt x 694.5147pt>
+File: images/x.png Graphic file (type png)
+<use images/x.png>
+Package pdftex.def Info: images/x.png  used on input line 58.
+(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
+<images/x_dot.png, id=564, 1387.584pt x 694.5147pt>
+File: images/x_dot.png Graphic file (type png)
+<use images/x_dot.png>
+Package pdftex.def Info: images/x_dot.png  used on input line 65.
+(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
+<images/z.png, id=565, 1387.584pt x 694.5147pt>
+File: images/z.png Graphic file (type png)
+<use images/z.png>
+Package pdftex.def Info: images/z.png  used on input line 77.
+(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
+<images/z_dot.png, id=566, 1387.584pt x 694.5147pt>
+File: images/z_dot.png Graphic file (type png)
+<use images/z_dot.png>
+Package pdftex.def Info: images/z_dot.png  used on input line 84.
+(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
+<images/theta.png, id=567, 1387.584pt x 694.5147pt>
+File: images/theta.png Graphic file (type png)
+<use images/theta.png>
+Package pdftex.def Info: images/theta.png  used on input line 96.
+(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
+<images/theta_dot.png, id=568, 1387.584pt x 694.5147pt>
+File: images/theta_dot.png Graphic file (type png)
+<use images/theta_dot.png>
+Package pdftex.def Info: images/theta_dot.png  used on input line 103.
+(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
+<images/y.png, id=569, 1387.584pt x 694.5147pt>
+File: images/y.png Graphic file (type png)
+<use images/y.png>
+Package pdftex.def Info: images/y.png  used on input line 115.
+(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
+<images/y_dot.png, id=570, 1387.584pt x 694.5147pt>
+File: images/y_dot.png Graphic file (type png)
+<use images/y_dot.png>
+Package pdftex.def Info: images/y_dot.png  used on input line 122.
+(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
+<images/phi.png, id=571, 1387.584pt x 694.5147pt>
+File: images/phi.png Graphic file (type png)
+<use images/phi.png>
+Package pdftex.def Info: images/phi.png  used on input line 134.
+(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
+<images/phi_dot.png, id=572, 1387.584pt x 694.5147pt>
+File: images/phi_dot.png Graphic file (type png)
+<use images/phi_dot.png>
+Package pdftex.def Info: images/phi_dot.png  used on input line 141.
+(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
+<images/psi.png, id=573, 1387.584pt x 694.5147pt>
+File: images/psi.png Graphic file (type png)
+<use images/psi.png>
+Package pdftex.def Info: images/psi.png  used on input line 153.
+(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
+<images/psi_dot.png, id=574, 1387.584pt x 694.5147pt>
+File: images/psi_dot.png Graphic file (type png)
+<use images/psi_dot.png>
+Package pdftex.def Info: images/psi_dot.png  used on input line 160.
+(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
+ [19 <./images/landing_energys.png>] [20 <./images/x.png> <./images/x_dot.png> 
+<./images/z.png> <./images/z_dot.png> <./images/theta.png> <./images/theta_dot.
+png> <./images/y.png> <./images/y_dot.png>]
+<images/rpms.png, id=594, 1387.584pt x 694.5147pt>
+File: images/rpms.png Graphic file (type png)
+<use images/rpms.png>
+Package pdftex.def Info: images/rpms.png  used on input line 172.
+(pdftex.def)             Requested size: 386.95897pt x 193.67857pt.
+<images/epsilon.png, id=595, 1387.584pt x 694.5147pt>
+File: images/epsilon.png Graphic file (type png)
+<use images/epsilon.png>
+Package pdftex.def Info: images/epsilon.png  used on input line 181.
+(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
+<images/xi.png, id=596, 1387.584pt x 694.5147pt>
+File: images/xi.png Graphic file (type png)
+<use images/xi.png>
+Package pdftex.def Info: images/xi.png  used on input line 188.
+(pdftex.def)             Requested size: 232.17242pt x 116.20078pt.
+ [21 <./images/phi.png> <./images/phi_dot.png> <./images/psi.png> <./images/psi
+_dot.png>]
+[22 <./images/rpms.png> <./images/epsilon.png> <./images/xi.png>]
+<images/headwind.png, id=615, 666.3294pt x 447.1104pt>
+File: images/headwind.png Graphic file (type png)
+<use images/headwind.png>
+Package pdftex.def Info: images/headwind.png  used on input line 202.
+(pdftex.def)             Requested size: 386.95897pt x 259.65167pt.
+<images/crosswind.png, id=616, 661.5114pt x 447.1104pt>
+File: images/crosswind.png Graphic file (type png)
+<use images/crosswind.png>
+Package pdftex.def Info: images/crosswind.png  used on input line 208.
+(pdftex.def)             Requested size: 386.95897pt x 261.54147pt.
+ [23 <./images/headwind.png (PNG copy)>]
+<images/landing_energy.png, id=622, 383.031pt x 225.4824pt>
+File: images/landing_energy.png Graphic file (type png)
+<use images/landing_energy.png>
+Package pdftex.def Info: images/landing_energy.png  used on input line 217.
+(pdftex.def)             Requested size: 386.95897pt x 227.81111pt.
+<images/landing_power.png, id=623, 399.894pt x 224.5188pt>
+File: images/landing_power.png Graphic file (type png)
+<use images/landing_power.png>
+Package pdftex.def Info: images/landing_power.png  used on input line 224.
+(pdftex.def)             Requested size: 386.95897pt x 217.26564pt.
+ [24 <./images/crosswind.png (PNG copy)> <./images/landing_energy.png (PNG copy
+)>]
+<images/15m_rejection Alt.png, id=629, 1387.584pt x 694.5147pt>
+File: images/15m_rejection Alt.png Graphic file (type png)
+<use images/15m_rejection Alt.png>
+Package pdftex.def Info: images/15m_rejection Alt.png  used on input line 236.
+(pdftex.def)             Requested size: 386.95897pt x 193.67857pt.
+) [25 <./images/landing_power.png (PNG copy)> <./images/15m_rejection Alt.png>]
 \openout2 = `conclusions-future.aux'.
 
  (conclusions-future.tex
 Chapter 5.
-Excluding 'comment' comment.) [23
+Excluding 'comment' comment. Excluding 'comment' comment.) [26
 
 
 
 
-] [24]
+] [27]
 \openout2 = `appendix1.aux'.
 
- (appendix1.tex
+
+(appendix1.tex
 Appendix A.
-) [25
-
-
-
-
-]
-\openout2 = `appendix2.aux'.
-
- (appendix2.tex
-Appendix B.
-) [26
+) [28
 
 
 
 
 ] (thesis.bbl
-Underfull \hbox (badness 10000) in paragraph at lines 20--25
+Underfull \hbox (badness 10000) in paragraph at lines 26--31
 []\OT1/cmr/m/n/10.95 ArduPilot Dev Team.  Lua scripts.  []$\OT1/cmtt/m/n/10.95 
 https : / / ardupilot . org / plane / docs /
  []
 
 
-Underfull \hbox (badness 4505) in paragraph at lines 27--32
+Underfull \hbox (badness 4505) in paragraph at lines 33--38
 []\OT1/cmr/m/n/10.95 ArduPilot Dev Team.  Quad-plane over-view.  []$\OT1/cmtt/m
 /n/10.95 https : / / ardupilot . org / plane / docs /
  []
 
-[27
+[29
 
 
 
-]) [28] (thesis.aux (plagerism-statement.aux) (thanks.aux) (abstract.aux)
+]) [30] (thesis.aux (plagerism-statement.aux) (thanks.aux) (abstract.aux)
 (abbreviations.aux) (introduction.aux) (background.aux) (methodology.aux)
-(results-analysis.aux) (conclusions-future.aux) (appendix1.aux) (appendix2.aux)
-)
+(results-analysis.aux) (conclusions-future.aux) (appendix1.aux))
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
  ***********
 
 
-LaTeX Warning: There were undefined references.
-
-
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: D2B4986A36928B413CECB37ED9E45A78;6888.
+(rerunfilecheck)             Checksum: 00826DE98409C21DB3677B0EF2C94C65;6221.
  ) 
 Here is how much of TeX's memory you used:
- 17291 strings out of 467870
- 285068 string characters out of 5418355
- 709637 words of memory out of 5000000
- 45680 multiletter control sequences out of 15000+600000
+ 17329 strings out of 467870
+ 285757 string characters out of 5418355
+ 707741 words of memory out of 5000000
+ 45720 multiletter control sequences out of 15000+600000
  639278 words of font info for 90 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,17n,79p,1192b,605s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,17n,79p,1228b,607s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\linky\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm
 1095.pk><C:/Users/linky/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfon
 ts/cm/cmbx10.pfb><C:/Users/linky/AppData/Local/Programs/MiKTeX/fonts/type1/publ
@@ -1079,9 +1082,9 @@ ublic/amsfonts/cm/cmsy6.pfb><C:/Users/linky/AppData/Local/Programs/MiKTeX/fonts
 eX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/linky/AppData/Local/Prog
 rams/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/linky/AppData/L
 ocal/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on thesis.pdf (37 pages, 3199634 bytes).
+Output written on thesis.pdf (39 pages, 3550460 bytes).
 PDF statistics:
- 743 PDF objects out of 1000 (max. 8388607)
- 165 named destinations out of 1000 (max. 500000)
- 534 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 778 PDF objects out of 1000 (max. 8388607)
+ 170 named destinations out of 1000 (max. 500000)
+ 519 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -1,4 +1,4 @@
-\begin{thebibliography}{28}
+\begin{thebibliography}{29}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -15,6 +15,12 @@ M.~Allenspach and G.~J.~J. Ducard.
 B.~D.~O. Anderson and J.~B. Moore.
 \newblock \emph{Optimal Control: Linear Quadratic Methods}.
 \newblock Prentice Hall, 1990.
+
+\bibitem[{Anthropic}(2026)]{anthropic_claude}
+{Anthropic}.
+\newblock Claude.
+\newblock \url{https://claude.ai}, 2026.
+\newblock Large language model. Accessed: 2026-11-06.
 
 \bibitem[{ArduPilot Dev Team}({\natexlab{a}})]{ardupilot_lua}
 {ArduPilot Dev Team}.

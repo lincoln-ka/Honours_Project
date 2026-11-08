@@ -6,28 +6,32 @@
 \contentsline {figure}{\numberline {2.2}{\ignorespaces Vortex Ring State Air Flow}}{3}{figure.caption.9}%
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {3.1}{\ignorespaces Dynamical Model Diagram}}{7}{figure.caption.10}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Griffon Pro Wing Aerodynamic Coeffcients}}{9}{figure.caption.12}%
-\contentsline {figure}{\numberline {3.3}{\ignorespaces Griffon Pro Elevator Aerodynamic Coeffcients at $\epsilon =0$}}{9}{figure.caption.13}%
-\contentsline {figure}{\numberline {3.4}{\ignorespaces Trajectory Optimisation Solution States}}{12}{figure.caption.15}%
-\contentsline {figure}{\numberline {3.5}{\ignorespaces Trajectory Optimisation Solution Control Inputs}}{12}{figure.caption.16}%
-\contentsline {figure}{\numberline {3.6}{\ignorespaces Longitudinal Control Block Diagram}}{13}{figure.caption.17}%
-\contentsline {figure}{\numberline {3.7}{\ignorespaces Rotor Control Block Diagram}}{14}{figure.caption.18}%
-\contentsline {figure}{\numberline {3.8}{\ignorespaces Lateral Control Block Diagram}}{14}{figure.caption.19}%
-\contentsline {figure}{\numberline {3.9}{\ignorespaces LQR Re($\lambda _{max}$)}}{15}{figure.caption.21}%
-\contentsline {figure}{\numberline {3.10}{\ignorespaces LQR Rotor Gains}}{16}{figure.caption.22}%
-\contentsline {figure}{\numberline {3.11}{\ignorespaces Altitude Floor Rejected Landing (15m)}}{17}{figure.caption.23}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Griffin Pro Wing Aerodynamic Coefficients}}{9}{figure.caption.12}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Griffin Pro Elevator Aerodynamic Coefficients at $\epsilon =0$}}{9}{figure.caption.13}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Griffin Pro Rotor Lift}}{11}{figure.caption.15}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Griffin Pro Rotor Drag}}{11}{figure.caption.16}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Longitudinal Control Block Diagram}}{13}{figure.caption.18}%
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Rotor Control Block Diagram}}{14}{figure.caption.19}%
+\contentsline {figure}{\numberline {3.8}{\ignorespaces Lateral Control Block Diagram}}{14}{figure.caption.20}%
+\contentsline {figure}{\numberline {3.9}{\ignorespaces LQR Re($\lambda _{max}$)}}{15}{figure.caption.22}%
+\contentsline {figure}{\numberline {3.10}{\ignorespaces LQR Rotor Gains}}{16}{figure.caption.23}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Landing Approach Energy Consumption}}{18}{figure.caption.24}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Landing Approach Power}}{19}{figure.caption.25}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Simulation $x$ and $\dot {x}$}}{19}{figure.caption.26}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Simulation $z$ and $\dot {z}$}}{20}{figure.caption.27}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Simulation $\theta $ and $\dot {\theta }$}}{20}{figure.caption.28}%
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Simulation $y$ and $\dot {y}$}}{20}{figure.caption.29}%
-\contentsline {figure}{\numberline {4.7}{\ignorespaces Simulation $\phi $ and $\dot {\phi }$}}{20}{figure.caption.30}%
-\contentsline {figure}{\numberline {4.8}{\ignorespaces Simulation $\psi $ and $\dot {\psi }$}}{21}{figure.caption.31}%
-\contentsline {figure}{\numberline {4.9}{\ignorespaces Simulation $\omega $}}{21}{figure.caption.32}%
-\contentsline {figure}{\numberline {4.10}{\ignorespaces Simulation $\epsilon $ and $\xi $}}{21}{figure.caption.33}%
-\contentsline {figure}{\numberline {4.11}{\ignorespaces Landing Approach Energy States}}{22}{figure.caption.34}%
-\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Trajectory Optimisation Solution}}{17}{figure.caption.24}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Trajectory Optimisation Solution States}}{18}{figure.caption.25}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Trajectory Optimisation Solution Control Inputs}}{18}{figure.caption.26}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Landing Approach Energy States}}{19}{figure.caption.27}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Simulation $x$ and $\dot {x}$}}{20}{figure.caption.28}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Simulation $z$ and $\dot {z}$}}{20}{figure.caption.29}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Simulation $\theta $ and $\dot {\theta }$}}{20}{figure.caption.30}%
+\contentsline {figure}{\numberline {4.8}{\ignorespaces Simulation $y$ and $\dot {y}$}}{20}{figure.caption.31}%
+\contentsline {figure}{\numberline {4.9}{\ignorespaces Simulation $\phi $ and $\dot {\phi }$}}{21}{figure.caption.32}%
+\contentsline {figure}{\numberline {4.10}{\ignorespaces Simulation $\psi $ and $\dot {\psi }$}}{21}{figure.caption.33}%
+\contentsline {figure}{\numberline {4.11}{\ignorespaces Simulation $\omega _{1-4}$}}{22}{figure.caption.34}%
+\contentsline {figure}{\numberline {4.12}{\ignorespaces Simulation $\epsilon $ and $\xi $}}{22}{figure.caption.35}%
+\contentsline {figure}{\numberline {4.13}{\ignorespaces Headwind Step Response Peak in Hover}}{23}{figure.caption.36}%
+\contentsline {figure}{\numberline {4.14}{\ignorespaces Crosswind Step Response Peak in Hover}}{24}{figure.caption.37}%
+\contentsline {figure}{\numberline {4.15}{\ignorespaces Landing Approach Energy Consumption}}{24}{figure.caption.38}%
+\contentsline {figure}{\numberline {4.16}{\ignorespaces Landing Approach Power}}{25}{figure.caption.39}%
+\contentsline {figure}{\numberline {4.17}{\ignorespaces Altitude Floor Rejected Landing (15m)}}{25}{figure.caption.40}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
